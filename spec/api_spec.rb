@@ -7,6 +7,29 @@ describe Kintone::Api do
   let(:user) { "Administrator" }
   let(:password) { "cybozu" }
 
+  describe "guest" do
+    before(:each) do
+      subject
+    end
+
+    subject { target.guest(space) }
+
+    context "引数が数値の1の時" do
+      let(:space) { 1 }
+      it { expect(target.instance_variable_get(:@base_path)).to eq("/k/guest/1/v1/") }
+    end
+
+    context "引数がnilの時" do
+      let(:space) { nil }
+      it { expect(target.instance_variable_get(:@base_path)).to eq("/k/v1/") }
+    end
+
+    context "引数に数字以外の文字が含まれる時" do
+      let(:space) { "2.1" }
+      it { expect(target.instance_variable_get(:@base_path)).to eq("/k/v1/") }
+    end
+  end
+
   describe "#get" do
     before(:each) do
       stub_request(

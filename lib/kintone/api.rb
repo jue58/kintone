@@ -21,7 +21,7 @@ class Kintone::Api
   end
 
   def guest(space)
-    space_path = SPACE_PATH % space unless space.nil? || space.empty?
+    space_path = SPACE_PATH % space if space.to_s.match(/^[1-9][0-9]*$/)
     @base_path = BASE_PATH % space_path
     return self
   end

@@ -3,7 +3,7 @@ require 'kintone/api'
 module Kintone::Command
   class Record
     PATH = "record.json"
-  
+
     def initialize(api)
       @api = api
     end
