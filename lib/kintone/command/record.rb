@@ -1,8 +1,8 @@
 require 'kintone/api'
 
-module Kintone::Uri
+module Kintone::Command
   class Record
-    PATH = "/k/v1/record.json"
+    PATH = "record.json"
   
     def initialize(api)
       @api = api

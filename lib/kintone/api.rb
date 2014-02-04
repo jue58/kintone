@@ -2,11 +2,15 @@ require 'faraday'
 require 'faraday_middleware'
 require 'base64'
 require 'json'
-require 'kintone/uri/record'
+require 'kintone/command/record'
 
 class Kintone::Api
+  BASE_PATH = "/k%s/v1/"
+  SPACE_PATH = "/guest/%s"
+
   def initialize(domain, user, password)
     @token = Base64.encode64("#{user}:#{password}")
+    @base_path = BASE_PATH % nil
     @connection =
       Faraday.new(:url => "https://#{domain}", :ssl => false) do |builder|
         builder.adapter :net_http
@@ -16,10 +20,17 @@ class Kintone::Api
       end
   end
 
+  def guest(space)
+    space_path = SPACE_PATH % space unless space.nil? || space.empty?
+    @base_path = BASE_PATH % space_path
+    return self
+  end
+
   def get(path, params=nil)
+    url = @base_path + path
     response =
       @connection.get do |request|
-        request.url path
+        request.url url
         request.params = params
         request.headers = {"X-Cybozu-Authorization" => @token}
       end
@@ -27,9 +38,10 @@ class Kintone::Api
   end
 
   def post(path, body)
+    url = @base_path + path
     response =
       @connection.post do |request|
-        request.url path
+        request.url url
         request.headers = {"X-Cybozu-Authorization" => @token, "Content-Type" => "application/json"}
         request.body = body.to_json
       end
@@ -37,9 +49,10 @@ class Kintone::Api
   end
 
   def put(path, body)
+    url = @base_path + path
     response =
       @connection.put do |request|
-        request.url path
+        request.url url
         request.headers = {"X-Cybozu-Authorization" => @token, "Content-Type" => "application/json"}
         request.body = body.to_json
       end
@@ -47,9 +60,10 @@ class Kintone::Api
   end
 
   def delete(path, params=nil)
+    url = @base_path + path
     response =
       @connection.delete do |request|
-        request.url path
+        request.url url
         request.params = params
         request.headers = {"X-Cybozu-Authorization" => @token}
       end
@@ -57,6 +71,6 @@ class Kintone::Api
   end
 
   def record
-    Kintone::Uri::Record.new(self)
+    Kintone::Command::Record.new(self)
   end
 end
