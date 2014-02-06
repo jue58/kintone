@@ -1,6 +1,6 @@
 # Kintone
 
-クラウド型データベースサービスKintone(https://kintone.cybozu.com/)のREST APIを使用するためのgemです。
+クラウド型データベースサービスKintone( https://kintone.cybozu.com/ )のREST APIを使用するためのgemです。
 
 ## Installation
 
@@ -39,4 +39,4 @@
 	api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
 	api.guest(1).record.get(8, 100)
 
-APIの仕様等については、cybozu.com developers(https://developers.cybozu.com/)を見てください。
+APIの仕様等については、cybozu.com developers( https://developers.cybozu.com/ )を見てください。
