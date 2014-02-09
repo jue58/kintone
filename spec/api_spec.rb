@@ -1,5 +1,7 @@
 require 'spec_helper'
 require 'kintone/api'
+require 'kintone/command/record'
+require 'kintone/command/records'
 
 describe Kintone::Api do
   let(:target) { Kintone::Api.new(domain, user, password) }
@@ -98,5 +100,17 @@ describe Kintone::Api do
     let(:params) { {"p1" => "abc", "p2" => "def"} }
 
     it { expect(subject).to eq({"abc" => "def"}) }
+  end
+
+  describe "#record" do
+    subject { target.record }
+
+    it { expect(subject).to be_a_kind_of(Kintone::Command::Record) }
+  end
+
+  describe "#records" do
+    subject { target.records }
+
+    it { expect(subject).to be_a_kind_of(Kintone::Command::Records) }
   end
 end

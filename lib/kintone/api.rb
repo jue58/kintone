@@ -3,6 +3,7 @@ require 'faraday_middleware'
 require 'base64'
 require 'json'
 require 'kintone/command/record'
+require 'kintone/command/records'
 
 class Kintone::Api
   BASE_PATH = "/k%s/v1/"
@@ -72,5 +73,9 @@ class Kintone::Api
 
   def record
     Kintone::Command::Record.new(self)
+  end
+
+  def records
+    Kintone::Command::Records.new(self)
   end
 end
