@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Kintone::VERSION
   spec.authors       = ["Rikiya Kawakami"]
   spec.email         = ["ricky.k.yang@gmail.com"]
-  spec.summary       = %q{Kintone API client.}
-  spec.description   = %q{Kintone API client.}
+  spec.summary       = %q{kintone API client for Ruby.}
+  spec.description   = %q{kintone API client for Ruby.}
   spec.homepage      = "https://github.com/jue58/kintone"
   spec.license       = "MIT"
 
