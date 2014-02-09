@@ -1,0 +1,3 @@
+module Kintone::Command
+  
+end
