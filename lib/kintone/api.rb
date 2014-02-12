@@ -4,6 +4,7 @@ require 'base64'
 require 'json'
 require 'kintone/command/record'
 require 'kintone/command/records'
+require 'kintone/command/form'
 
 class Kintone::Api
   BASE_PATH = "/k%s/v1/"
@@ -77,5 +78,9 @@ class Kintone::Api
 
   def records
     Kintone::Command::Records.new(self)
+  end
+
+  def form
+    Kintone::Command::Form.new(self)
   end
 end
