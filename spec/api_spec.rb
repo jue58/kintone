@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'kintone/api'
+require 'kintone/api/guest'
 require 'kintone/command/record'
 require 'kintone/command/records'
 
@@ -9,26 +10,33 @@ describe Kintone::Api do
   let(:user) { "Administrator" }
   let(:password) { "cybozu" }
 
-  describe "guest" do
-    before(:each) do
-      subject
-    end
+  describe "#get_url" do
+    subject { target.get_url(command) }
 
+    context "" do
+      let(:command) { "path" }
+      it { expect(subject).to eq("/k/v1/path.json") }
+    end
+  end
+
+  describe "#guest" do
     subject { target.guest(space) }
 
     context "引数が数値の1の時" do
       let(:space) { 1 }
-      it { expect(target.instance_variable_get(:@base_path)).to eq("/k/guest/1/v1/") }
+
+      it { expect(subject).to be_a_kind_of(Kintone::Api::Guest) }
+      it { expect(subject.instance_variable_get(:@guest_path)).to eq("/k/guest/1/v1/") }
     end
 
     context "引数がnilの時" do
       let(:space) { nil }
-      it { expect(target.instance_variable_get(:@base_path)).to eq("/k/v1/") }
+      xit { expect(subject.instance_variable_get(:@guest_path)).to eq("/k/guest//v1/") }
     end
 
     context "引数に数字以外の文字が含まれる時" do
       let(:space) { "2.1" }
-      it { expect(target.instance_variable_get(:@base_path)).to eq("/k/v1/") }
+      xit { expect(subject.instance_variable_get(:@guest_path)).to eq("/k/guest//v1/") }
     end
   end
 
@@ -43,7 +51,7 @@ describe Kintone::Api do
     end
 
     subject { target.get(path, params) }
-    let(:path) { "path" }
+    let(:path) { "/k/v1/path" }
     let(:params) { {"p1" => "abc", "p2" => "def"} }
 
     it { expect(subject).to eq({"abc" => "def"}) }
@@ -61,7 +69,7 @@ describe Kintone::Api do
     end
 
     subject { target.post(path, body) }
-    let(:path) { "path" }
+    let(:path) { "/k/v1/path" }
     let(:body) { {"p1" => "abc", "p2" => "def"} }
 
     it { expect(subject).to eq({"abc" => "def"}) }
@@ -79,7 +87,7 @@ describe Kintone::Api do
     end
 
     subject { target.put(path, body) }
-    let(:path) { "path" }
+    let(:path) { "/k/v1/path" }
     let(:body) { {"p1" => "abc", "p2" => "def"} }
 
     it { expect(subject).to eq({"abc" => "def"}) }
@@ -96,7 +104,7 @@ describe Kintone::Api do
     end
 
     subject { target.delete(path, params) }
-    let(:path) { "path" }
+    let(:path) { "/k/v1/path" }
     let(:params) { {"p1" => "abc", "p2" => "def"} }
 
     it { expect(subject).to eq({"abc" => "def"}) }
@@ -112,5 +120,11 @@ describe Kintone::Api do
     subject { target.records }
 
     it { expect(subject).to be_a_kind_of(Kintone::Command::Records) }
+  end
+
+  describe "#form" do
+    subject { target.form }
+
+    it { expect(subject).to be_a_kind_of(Kintone::Command::Form) }
   end
 end
