@@ -4,14 +4,15 @@ require 'base64'
 require 'json'
 require 'kintone/command/record'
 require 'kintone/command/records'
+require 'kintone/command/form'
+require 'kintone/api/guest'
 
 class Kintone::Api
-  BASE_PATH = "/k%s/v1/"
-  SPACE_PATH = "/guest/%s"
+  BASE_PATH = "/k/v1/"
+  COMMAND = "%s.json"
 
   def initialize(domain, user, password)
     @token = Base64.encode64("#{user}:#{password}")
-    @base_path = BASE_PATH % nil
     @connection =
       Faraday.new(:url => "https://#{domain}", :ssl => false) do |builder|
         builder.adapter :net_http
@@ -21,14 +22,15 @@ class Kintone::Api
       end
   end
 
-  def guest(space)
-    space_path = SPACE_PATH % space if space.to_s.match(/^[1-9][0-9]*$/)
-    @base_path = BASE_PATH % space_path
-    return self
+  def get_url(command)
+    return BASE_PATH + (COMMAND % command)
   end
 
-  def get(path, params=nil)
-    url = @base_path + path
+  def guest(space_id)
+    return Kintone::Api::Guest.new(space_id, self)
+  end
+
+  def get(url, params=nil)
     response =
       @connection.get do |request|
         request.url url
@@ -38,8 +40,7 @@ class Kintone::Api
     return response.body
   end
 
-  def post(path, body)
-    url = @base_path + path
+  def post(url, body)
     response =
       @connection.post do |request|
         request.url url
@@ -49,8 +50,7 @@ class Kintone::Api
     return response.body
   end
 
-  def put(path, body)
-    url = @base_path + path
+  def put(url, body)
     response =
       @connection.put do |request|
         request.url url
@@ -60,8 +60,7 @@ class Kintone::Api
     return response.body
   end
 
-  def delete(path, params=nil)
-    url = @base_path + path
+  def delete(url, params=nil)
     response =
       @connection.delete do |request|
         request.url url
@@ -77,5 +76,9 @@ class Kintone::Api
 
   def records
     Kintone::Command::Records.new(self)
+  end
+
+  def form
+    Kintone::Command::Form.new(self)
   end
 end
