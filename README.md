@@ -1,6 +1,6 @@
 # kintone
 
-クラウド型データベースサービスkintone( https://kintone.cybozu.com/ )のREST APIを使用するためのgemです。
+クラウド型データベースサービス[kintone](https://kintone.cybozu.com/)のREST APIを使用するためのgemです。
 
 ## Installation
 
@@ -24,6 +24,7 @@ api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
 - レコード登録
 - レコード更新
 - レコード削除
+- フォーム設計情報取得
 
 ### レコード取得
 
@@ -73,14 +74,24 @@ app = 8; ids = [100, 80]
 api.records.delete(app, ids) # => {}
 ```
 
+### フォーム設計情報取得
+
+```ruby
+app = 4
+api.form.get(app) # => {"properties" => [{...}, ...]}
+```
+
 ### 他APIへのリクエスト
 
 ```ruby
 # フォーム設計情報取得
-api.get("form.json", {"app" => 4}) # => {"properties" => [{...}, ...]}
+url = api.get_url("form")
+api.get(url, {"app" => 4}) # => {"properties" => [{...}, ...]}
+
 # 複数レコード登録
+url = api.get_url("records")
 body = {"app" => 7, "records" => [{...}, ...]}
-api.post("records.json", body) # => {"ids" => ["100","101"]}
+api.post(url, body) # => {"ids" => ["100","101"]}
 ```
 
 ### ゲストスペースへのAPIリクエスト
@@ -89,4 +100,4 @@ api.post("records.json", body) # => {"ids" => ["100","101"]}
 api.guest(1).record.get(8, 100)
 ```
 
-APIの仕様等については、cybozu.com developers( https://developers.cybozu.com/ )を見てください。
+APIの仕様等については、[cybozu.com developers](https://developers.cybozu.com/)を見てください。
