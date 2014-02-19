@@ -12,9 +12,11 @@ class Kintone::Api
   COMMAND = "%s.json"
 
   def initialize(domain, user, password)
-    @token = Base64.encode64("#{user}:#{password}")
+    token = Base64.encode64("#{user}:#{password}")
     @connection =
-      Faraday.new(:url => "https://#{domain}", :ssl => false) do |builder|
+      Faraday.new(:url => "https://#{domain}",
+                  :headers => {"X-Cybozu-Authorization" => token},
+                  :ssl => false) do |builder|
         builder.adapter :net_http
         builder.request :url_encoded
         builder.response :json
@@ -35,7 +37,6 @@ class Kintone::Api
       @connection.get do |request|
         request.url url
         request.params = params
-        request.headers = {"X-Cybozu-Authorization" => @token}
       end
     return response.body
   end
@@ -44,7 +45,7 @@ class Kintone::Api
     response =
       @connection.post do |request|
         request.url url
-        request.headers = {"X-Cybozu-Authorization" => @token, "Content-Type" => "application/json"}
+        request.headers["Content-Type"] = "application/json"
         request.body = body.to_json
       end
     return response.body
@@ -54,7 +55,7 @@ class Kintone::Api
     response =
       @connection.put do |request|
         request.url url
-        request.headers = {"X-Cybozu-Authorization" => @token, "Content-Type" => "application/json"}
+        request.headers["Content-Type"] = "application/json"
         request.body = body.to_json
       end
     return response.body
@@ -65,7 +66,6 @@ class Kintone::Api
       @connection.delete do |request|
         request.url url
         request.params = params
-        request.headers = {"X-Cybozu-Authorization" => @token}
       end
     return response.body
   end
