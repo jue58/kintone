@@ -5,6 +5,9 @@ require 'json'
 require 'kintone/command/record'
 require 'kintone/command/records'
 require 'kintone/command/form'
+require 'kintone/command/app_acl'
+require 'kintone/command/record_acl'
+require 'kintone/command/field_acl'
 require 'kintone/api/guest'
 
 class Kintone::Api
@@ -71,14 +74,26 @@ class Kintone::Api
   end
 
   def record
-    Kintone::Command::Record.new(self)
+    return Kintone::Command::Record.new(self)
   end
 
   def records
-    Kintone::Command::Records.new(self)
+    return Kintone::Command::Records.new(self)
   end
 
   def form
-    Kintone::Command::Form.new(self)
+    return Kintone::Command::Form.new(self)
+  end
+
+  def app_acl
+    return Kintone::Command::AppAcl.new(self)
+  end
+
+  def record_acl
+    return Kintone::Command::RecordAcl.new(self)
+  end
+
+  def field_acl
+    return Kintone::Command::FieldAcl.new(self)
   end
 end

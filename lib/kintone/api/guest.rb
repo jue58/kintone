@@ -28,6 +28,18 @@ class Kintone::Api
       return Kintone::Command::Form.new(self)
     end
 
+    def app_acl
+      return Kintone::Command::AppAcl.new(self)
+    end
+
+    def record_acl
+      return Kintone::Command::RecordAcl.new(self)
+    end
+
+    def field_acl
+      return Kintone::Command::FieldAcl.new(self)
+    end
+
     def_delegators :@api, :get, :post, :put, :delete
   end
 end
