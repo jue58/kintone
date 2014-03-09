@@ -1,16 +1,14 @@
 # kintone
 
-クラウド型データベースサービス[kintone](https://kintone.cybozu.com/)のREST APIを使用するためのgemです。
+A Ruby gem for communicating with the [kintone](https://kintone.cybozu.com/us/) REST API
 
 ## Installation
 
     gem install kintone
 
-又は、Gemfileに
+or execute `bundle install` command after you insert the following into Gemfile
 
     gem 'kintone'
-
-と書いて、`bundle install` コマンドを実行してください。
 
 ## Usage
 
@@ -19,85 +17,85 @@ require 'kintone'
 api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
 ```
 
-### 対応API
-- レコード取得
-- レコード登録
-- レコード更新
-- レコード削除
-- フォーム設計情報取得
+### Suppored API
+- Record retrieval
+- Record register
+- Record update
+- Record delete
+- Format retrieval
 
-### レコード取得
+### Record retrieval
 
 ```ruby
-# レコード取得(レコード番号指定)
+# Record retrieval(Assign by Record Number)
 app = 8; id = 100
 api.record.get(app, id) # => {"record" => {"record_id" => {"type" => "RECORD_NUMBER", "value" => "1"}}}
 
-# レコード取得(クエリで取得)
+# Records retrieval(Assign by Conditions by Query Strings)
 app = 8; fields = ["record_id", "created_time", "dropdown"]
 query = "updated_time > \"2012-02-03T09:00:00+0900\" and updated_time < \"2012-02-03T10:00:00+0900\" order by record_id asc limit 10 offset 20"
 api.records.get(app, query, fields) # => {"records" => [{...}, ...]}
 ```
 
-### レコード登録
+### Record register
 
 ```ruby
-# レコード登録(1件)
+# Record register(single record)
 app = 7
 record = {"number" => {"value" => "123456"}}
 api.record.create(app, record) # => {"id" => "100"}
 
-# レコード登録(複数件)
+# Records register(batch)
 app = 7
 records = [{"number" => {"value" => "123456"}}, {"number" => {"value" => "7890"}}]
 api.records.create(app, records) # => {"ids" => ["100", "101"]}
 ```
 
-### レコード更新
+### Record update
 
 ```ruby
-# レコード更新(1件)
+# Record update(single record)
 app = 4; id = 1
 record = {"string_multi" => {"value" => "changed!"}}
 api.record.update(app, id, record) # => {}
 
-# レコード更新(複数件)
+# Records update(batch)
 app = 4
 records = [{"id" => 1, "string_multi" => {"value" => "abcdef"}}, {"id" => 2, "string_multi" => {"value" => "opqrstu"}}]
 api.records.update(app, records) # => {}
 ```
 
-### レコード削除
+### Record delete
 
 ```ruby
 app = 8; ids = [100, 80]
 api.records.delete(app, ids) # => {}
 ```
 
-### フォーム設計情報取得
+### Format retrieval
 
 ```ruby
 app = 4
 api.form.get(app) # => {"properties" => [{...}, ...]}
 ```
 
-### 他APIへのリクエスト
+### Other examples
 
 ```ruby
-# フォーム設計情報取得
+# Format retrieval
 url = api.get_url("form")
 api.get(url, {"app" => 4}) # => {"properties" => [{...}, ...]}
 
-# 複数レコード登録
+# Batch record register
 url = api.get_url("records")
 body = {"app" => 7, "records" => [{...}, ...]}
 api.post(url, body) # => {"ids" => ["100","101"]}
 ```
 
-### ゲストスペースへのAPIリクエスト
+### Access to guest spaces
 
 ```ruby
 api.guest(1).record.get(8, 100)
 ```
 
-APIの仕様等については、[cybozu.com developers](https://developers.cybozu.com/)を見てください。
+see also [kintone developers](https://developers.kintone.com/)
