@@ -17,12 +17,13 @@ require 'kintone'
 api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
 ```
 
-### Suppored API
+### Supported API
 - Record retrieval
 - Record register
 - Record update
 - Record delete
 - Format retrieval
+- Permissions
 
 ### Record retrieval
 
@@ -77,6 +78,25 @@ api.records.delete(app, ids) # => {}
 ```ruby
 app = 4
 api.form.get(app) # => {"properties" => [{...}, ...]}
+```
+
+### Permissions
+
+```ruby
+# App
+app = 1
+rights = [{"entity" => {"type" => "USER", "code" => "user1"}, "appEditable" => true, ...}, ...]
+api.app_acl.update(app, rights) # => {}
+
+# Records
+id = 1
+rights = [{"filterCond" => "...", "entities" => [{"entity" => {...}, "viewable" => false, ...}, ...]}, ...]
+api.record_acl.update(id, rights) # => {}
+
+#Fields
+id = 1
+rights = [{"code" => "Single_line_text_0", "entities" => [{"entity" => {...}, "accesibility" => "WRITE"}, ...]}, ...]
+api.field_acl.update(id, rights) # => {}
 ```
 
 ### Other examples

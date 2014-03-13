@@ -5,6 +5,9 @@ require 'json'
 require 'kintone/command/record'
 require 'kintone/command/records'
 require 'kintone/command/form'
+require 'kintone/command/app_acl'
+require 'kintone/command/record_acl'
+require 'kintone/command/field_acl'
 require 'kintone/api/guest'
 
 class Kintone::Api
@@ -12,9 +15,11 @@ class Kintone::Api
   COMMAND = "%s.json"
 
   def initialize(domain, user, password)
-    @token = Base64.encode64("#{user}:#{password}")
+    token = Base64.encode64("#{user}:#{password}")
     @connection =
-      Faraday.new(:url => "https://#{domain}", :ssl => false) do |builder|
+      Faraday.new(:url => "https://#{domain}",
+                  :headers => {"X-Cybozu-Authorization" => token},
+                  :ssl => false) do |builder|
         builder.adapter :net_http
         builder.request :url_encoded
         builder.response :json
@@ -35,7 +40,6 @@ class Kintone::Api
       @connection.get do |request|
         request.url url
         request.params = params
-        request.headers = {"X-Cybozu-Authorization" => @token}
       end
     return response.body
   end
@@ -44,7 +48,7 @@ class Kintone::Api
     response =
       @connection.post do |request|
         request.url url
-        request.headers = {"X-Cybozu-Authorization" => @token, "Content-Type" => "application/json"}
+        request.headers["Content-Type"] = "application/json"
         request.body = body.to_json
       end
     return response.body
@@ -54,7 +58,7 @@ class Kintone::Api
     response =
       @connection.put do |request|
         request.url url
-        request.headers = {"X-Cybozu-Authorization" => @token, "Content-Type" => "application/json"}
+        request.headers["Content-Type"] = "application/json"
         request.body = body.to_json
       end
     return response.body
@@ -65,20 +69,31 @@ class Kintone::Api
       @connection.delete do |request|
         request.url url
         request.params = params
-        request.headers = {"X-Cybozu-Authorization" => @token}
       end
     return response.body
   end
 
   def record
-    Kintone::Command::Record.new(self)
+    return Kintone::Command::Record.new(self)
   end
 
   def records
-    Kintone::Command::Records.new(self)
+    return Kintone::Command::Records.new(self)
   end
 
   def form
-    Kintone::Command::Form.new(self)
+    return Kintone::Command::Form.new(self)
+  end
+
+  def app_acl
+    return Kintone::Command::AppAcl.new(self)
+  end
+
+  def record_acl
+    return Kintone::Command::RecordAcl.new(self)
+  end
+
+  def field_acl
+    return Kintone::Command::FieldAcl.new(self)
   end
 end
