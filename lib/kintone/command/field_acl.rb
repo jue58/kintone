@@ -1,12 +1,8 @@
 require 'kintone/command'
-require 'kintone/api'
 
-class Kintone::Command::FieldAcl
-  PATH = "field/acl"
-
-  def initialize(api)
-    @api = api
-    @url = @api.get_url(PATH)
+class Kintone::Command::FieldAcl < Kintone::Command
+  def self.path
+    return "field/acl"
   end
 
   def update(id, rights)

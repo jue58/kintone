@@ -1,12 +1,8 @@
 require 'kintone/command'
-require 'kintone/api'
 
-class Kintone::Command::AppAcl
-  PATH = "app/acl"
-
-  def initialize(api)
-    @api = api
-    @url = @api.get_url(PATH)
+class Kintone::Command::AppAcl < Kintone::Command
+  def self.path
+    return "app/acl"
   end
 
   def update(app, rights)

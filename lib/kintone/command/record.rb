@@ -1,12 +1,8 @@
 require 'kintone/command'
-require 'kintone/api'
 
-class Kintone::Command::Record
-  PATH = "record"
-
-  def initialize(api)
-    @api = api
-    @url = @api.get_url(PATH)
+class Kintone::Command::Record < Kintone::Command
+  def self.path
+    return "record"
   end
 
   def get(app, id)

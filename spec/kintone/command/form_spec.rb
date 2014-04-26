@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'kintone/command/form'
 require 'kintone/api'
 

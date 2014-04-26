@@ -1,12 +1,8 @@
 require 'kintone/command'
-require 'kintone/api'
 
-class Kintone::Command::Form
-  PATH = "form"
-
-  def initialize(api)
-    @api = api
-    @url = @api.get_url(PATH)
+class Kintone::Command::Form < Kintone::Command
+  def self.path
+    return "form"
   end
 
   def get(app)
