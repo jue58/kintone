@@ -151,4 +151,10 @@ describe Kintone::Api do
 
     it { expect(subject).to be_a_kind_of(Kintone::Command::TemplateSpace) }
   end
+
+  describe "#space" do
+    subject { target.space }
+
+    it { expect(subject).to be_a_kind_of(Kintone::Command::Space) }
+  end
 end
