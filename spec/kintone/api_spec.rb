@@ -145,4 +145,10 @@ describe Kintone::Api do
 
     it { expect(subject).to be_a_kind_of(Kintone::Command::FieldAcl) }
   end
+
+  describe "#template_space" do
+    subject { target.template_space }
+
+    it { expect(subject).to be_a_kind_of(Kintone::Command::TemplateSpace) }
+  end
 end

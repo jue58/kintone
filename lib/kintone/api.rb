@@ -8,6 +8,7 @@ require 'kintone/command/form'
 require 'kintone/command/app_acl'
 require 'kintone/command/record_acl'
 require 'kintone/command/field_acl'
+require 'kintone/command/template_space'
 require 'kintone/api/guest'
 
 class Kintone::Api
@@ -95,5 +96,9 @@ class Kintone::Api
 
   def field_acl
     return Kintone::Command::FieldAcl.new(self)
+  end
+
+  def template_space
+    return Kintone::Command::TemplateSpace.new(self)
   end
 end
