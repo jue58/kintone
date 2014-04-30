@@ -15,7 +15,7 @@ describe Kintone::Command::Space do
           :get,
           "https://example.cybozu.com/k/v1/space.json?id=1"
         ).
-        to_return(:body => result.to_json)
+        to_return(body: result.to_json, status: 200)
       end
 
       let(:id) { 1 }

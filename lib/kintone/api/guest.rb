@@ -44,6 +44,10 @@ class Kintone::Api
       return Kintone::Command::Space.new(self)
     end
 
+    def space_body
+      return Kintone::Command::SpaceBody.new(self)
+    end
+
     def_delegators :@api, :get, :post, :put, :delete
   end
 end

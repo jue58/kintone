@@ -10,6 +10,7 @@ require 'kintone/command/record_acl'
 require 'kintone/command/field_acl'
 require 'kintone/command/template_space'
 require 'kintone/command/space'
+require 'kintone/command/space_body'
 require 'kintone/api/guest'
 
 class Kintone::Api
@@ -105,5 +106,9 @@ class Kintone::Api
 
   def space
     return Kintone::Command::Space.new(self)
+  end
+
+  def space_body
+    return Kintone::Command::SpaceBody.new(self)
   end
 end

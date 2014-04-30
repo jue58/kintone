@@ -157,4 +157,10 @@ describe Kintone::Api do
 
     it { expect(subject).to be_a_kind_of(Kintone::Command::Space) }
   end
+
+  describe "#space_body" do
+    subject { target.space_body }
+
+    it { expect(subject).to be_a_kind_of(Kintone::Command::SpaceBody) }
+  end
 end
