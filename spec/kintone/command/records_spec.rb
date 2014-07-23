@@ -20,10 +20,10 @@ describe Kintone::Command::Records do
         ).
         to_return(:body => "{\"records\":[{\"record_id\": {\"type\":\"RECORD_NUMBER\",\"value\":\"1\"}}]}", :status => 200)
       end
-    
+
       it { expect(subject).to eq({"records" => [{"record_id" => {"type" => "RECORD_NUMBER", "value" => "1"}}]}) }
     end
-    
+
     context "条件に文字列を含むqueryを指定した時" do
       before(:each) do
         stub_request(
@@ -46,7 +46,7 @@ describe Kintone::Command::Records do
         ).
         to_return(:body => "{\"records\":[{\"record_id\": {\"type\":\"RECORD_NUMBER\",\"value\":\"1\"}}]}", :status => 200)
       end
-    
+
       let(:fields) { ["レコード番号", "created_time", "dropdown"] }
 
       it { expect(subject).to eq({"records" => [{"record_id" => {"type" => "RECORD_NUMBER", "value" => "1"}}]}) }
@@ -56,11 +56,12 @@ describe Kintone::Command::Records do
       before(:each) do
         stub_request(
           :get,
-          "https://example.cybozu.com/k/v1/records.json?app=8&query"
-        ).
-        to_return(:body => "{\"records\":[{\"record_id\": {\"type\":\"RECORD_NUMBER\",\"value\":\"1\"}}]}", :status => 200)
+          "https://example.cybozu.com/k/v1/records.json?"
+        )
+          .with(query: { app: 8, query: nil })
+          .to_return(:body => "{\"records\":[{\"record_id\": {\"type\":\"RECORD_NUMBER\",\"value\":\"1\"}}]}", :status => 200)
       end
-    
+
       let(:query) { nil }
 
       it { expect(subject).to eq({"records" => [{"record_id" => {"type" => "RECORD_NUMBER", "value" => "1"}}]}) }

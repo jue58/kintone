@@ -26,7 +26,6 @@ class Kintone::Api
         builder.adapter :net_http
         builder.request :url_encoded
         builder.response :json
-        builder.response :logger
       end
   end
 
