@@ -2,7 +2,7 @@ require 'kintone/api'
 
 class Kintone::Command
   def self.path
-    return "/"
+    '/'
   end
 
   def initialize(api)

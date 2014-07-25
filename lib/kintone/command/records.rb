@@ -2,26 +2,26 @@ require 'kintone/command'
 
 class Kintone::Command::Records < Kintone::Command
   def self.path
-    return "records"
+    'records'
   end
 
   def get(app, query, fields)
-    params = {:app => app, :query => query}
-    fields.each_with_index {|v, i| params["fields[#{i}]"] = v}
-    return @api.get(@url, params)
+    params = { app: app, query: query }
+    fields.each_with_index { |v, i| params["fields[#{i}]"] = v }
+    @api.get(@url, params)
   end
 
   def create(app, records)
-    return @api.post(@url, {:app => app, :records => records})
+    @api.post(@url, app: app, records: records)
   end
 
   def update(app, records)
-    return @api.put(@url, {:app => app, :records => records})
+    @api.put(@url, app: app, records: records)
   end
 
   def delete(app, ids)
-    params = {:app => app}
-    ids.each_with_index {|v, i| params["ids[#{i}]"] = v}
-    return @api.delete(@url, params)
+    params = { app: app }
+    ids.each_with_index { |v, i| params["ids[#{i}]"] = v }
+    @api.delete(@url, params)
   end
 end

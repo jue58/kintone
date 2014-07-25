@@ -4,16 +4,16 @@ require 'kintone/api'
 
 describe Kintone::Command::Space do
   let(:target) { Kintone::Command::Space.new(api) }
-  let(:api) { Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu") }
+  let(:api) { Kintone::Api.new('example.cybozu.com', 'Administrator', 'cybozu') }
 
-  describe "#get" do
+  describe '#get' do
     subject { target.get(id) }
 
-    context "" do
+    context '' do
       before(:each) do
         stub_request(
           :get,
-          "https://example.cybozu.com/k/v1/space.json"
+          'https://example.cybozu.com/k/v1/space.json'
         )
           .with(query: { id: 1 })
           .to_return(body: result.to_json, status: 200)
@@ -23,8 +23,8 @@ describe Kintone::Command::Space do
 
       def result
         {
-          "id" => "1",
-          "name" => "sample space"
+          'id' => '1',
+          'name' => 'sample space'
         }
       end
 
@@ -32,17 +32,17 @@ describe Kintone::Command::Space do
     end
   end
 
-  describe "#delete" do
+  describe '#delete' do
     subject { target.delete(id) }
 
-    context "" do
+    context '' do
       before(:each) do
         stub_request(
           :delete,
-          "https://example.cybozu.com/k/v1/space.json"
+          'https://example.cybozu.com/k/v1/space.json'
         )
           .with(query: { id: 1 })
-          .to_return(body: "{}", status: 200)
+          .to_return(body: '{}', status: 200)
       end
 
       let(:id) { 1 }
