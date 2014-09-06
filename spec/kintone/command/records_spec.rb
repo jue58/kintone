@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'kintone/command/records'
 require 'kintone/api'
+require 'kintone/type'
 
 describe Kintone::Command::Records do
   let(:target) { Kintone::Command::Records.new(api) }
@@ -94,7 +95,18 @@ describe Kintone::Command::Records do
     subject { target.register(app, records) }
 
     context '' do
-      def records_data
+      before(:each) do
+        stub_request(
+          :post,
+          'https://example.cybozu.com/k/v1/records.json'
+        )
+          .with(body: { 'app' => 7, 'records' => hash_data }.to_json)
+          .to_return(body: "{\"ids\":[\"100\", \"101\"]}", status: 200)
+      end
+
+      let(:app) { 7 }
+
+      def hash_data
         [
           {
             'rich_editor' => { 'value' => 'testtest' }
@@ -105,19 +117,23 @@ describe Kintone::Command::Records do
         ]
       end
 
-      before(:each) do
-        stub_request(
-          :post,
-          'https://example.cybozu.com/k/v1/records.json'
-        )
-          .with(body: { 'app' => 7, 'records' => records_data }.to_json)
-          .to_return(body: "{\"ids\":[\"100\", \"101\"]}", status: 200)
+      def record_data
+        [
+          Kintone::Type::Record.new(rich_editor: 'testtest'),
+          Kintone::Type::Record.new(user_select: [{ code: 'suzuki' }])
+        ]
       end
 
-      let(:app) { 7 }
-      let(:records) { records_data }
+      where(:records, :result) do
+        [
+          [hash_data, { 'ids' => %w(100 101) }],
+          [record_data, { 'ids' => %w(100 101) }]
+        ]
+      end
 
-      it { expect(subject).to eq 'ids' => %w(100 101) }
+      with_them do
+        it { expect(subject).to eq result }
+      end
     end
   end
 
@@ -130,21 +146,36 @@ describe Kintone::Command::Records do
           :put,
           'https://example.cybozu.com/k/v1/records.json'
         )
-          .with(body: { 'app' => 4, 'records' => records_data }.to_json)
+          .with(body: { 'app' => 4, 'records' => hash_data }.to_json)
           .to_return(body: '{}', status: 200)
       end
 
       let(:app) { 4 }
-      let(:records) { records_data }
 
-      def records_data
+      def hash_data
         [
           { 'id' => 1, 'record' => { 'string_1' => { 'value' => 'abcdef' } } },
           { 'id' => 2, 'record' => { 'string_multi' => { 'value' => 'opqrstu' } } }
         ]
       end
 
-      it { expect(subject).to eq({}) }
+      def record_data
+        [
+          { id: 1, record: Kintone::Type::Record.new(string_1: 'abcdef') },
+          { id: 2, record: Kintone::Type::Record.new(string_multi: 'opqrstu') }
+        ]
+      end
+
+      where(:records, :result) do
+        [
+          [hash_data, {}],
+          [record_data, {}]
+        ]
+      end
+
+      with_them do
+        it { expect(subject).to eq result }
+      end
     end
   end
 
