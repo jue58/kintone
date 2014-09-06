@@ -24,3 +24,7 @@ Style/LineLength:
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/StringLiterals:
   EnforcedStyle: single_quotes
+
+Style/WordArray:
+  Exclude:
+    - 'spec/**/**'

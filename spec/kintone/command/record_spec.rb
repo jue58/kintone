@@ -1,41 +1,31 @@
 require 'spec_helper'
 require 'kintone/command/record'
 require 'kintone/api'
+require 'kintone/type/record'
 
 describe Kintone::Command::Record do
   let(:target) { Kintone::Command::Record.new(api) }
   let(:api) { Kintone::Api.new('www.example.com', 'Administrator', 'cybozu') }
 
   describe '#get' do
-    subject { target.get(app, id) }
-
-    context '引数が整数型の時' do
-      before(:each) do
-        stub_request(
-          :get,
-          'https://www.example.com/k/v1/record.json?app=8&id=100'
-        )
-          .to_return(body: "{\"result\":\"ok\"}", status: 200)
-      end
-
-      let(:app) { 8 }
-      let(:id) { 100 }
-
-      it { expect(subject).to eq 'result' => 'ok' }
+    before(:each) do
+      stub_request(
+        :get,
+        'https://www.example.com/k/v1/record.json?app=8&id=100'
+      )
+        .to_return(body: "{\"result\":\"ok\"}", status: 200)
     end
 
-    context '引数が数字の文字列の時' do
-      before(:each) do
-        stub_request(
-          :get,
-          'https://www.example.com/k/v1/record.json?app=8&id=100'
-        )
-          .to_return(body: "{\"result\":\"ok\"}", status: 200)
-      end
+    subject { target.get(app, id) }
 
-      let(:app) { '8' }
-      let(:id) { '100' }
+    where(:app, :id) do
+      [
+        [8, 100],
+        ['8', '100']
+      ]
+    end
 
+    with_them do
       it { expect(subject).to eq 'result' => 'ok' }
     end
   end
@@ -53,7 +43,6 @@ describe Kintone::Command::Record do
     subject { target.register(app, record) }
 
     let(:app) { 7 }
-    let(:record) { hash_record }
 
     def hash_record
       {
@@ -63,16 +52,23 @@ describe Kintone::Command::Record do
       }
     end
 
-    it { expect(subject).to eq 'id' => '100' }
+    def record_record
+      Kintone::Type::Record.new(
+        number: '123456',
+        rich_editor: 'testtest',
+        user_select: [{ 'code' => 'sato' }]
+      )
+    end
+
+    where(:record, :result) do
+      [
+        [hash_record, { 'id' => '100' }],
+        [record_record, { 'id' => '100' }]
+      ]
+    end
   end
 
   describe '#update' do
-    def hash_record
-      {
-        'string_multi' => { 'value' => 'character string is changed' }
-      }
-    end
-
     before(:each) do
       stub_request(
         :put,
@@ -86,8 +82,26 @@ describe Kintone::Command::Record do
 
     let(:app) { 4 }
     let(:id) { 1 }
-    let(:record) { hash_record }
 
-    it { expect(subject).to eq({}) }
+    def hash_record
+      {
+        'string_multi' => { 'value' => 'character string is changed' }
+      }
+    end
+
+    def record_record
+      Kintone::Type::Record.new(string_multi: 'character string is changed')
+    end
+
+    where(:record, :result) do
+      [
+        [hash_record, {}],
+        [record_record, {}]
+      ]
+    end
+
+    with_them do
+      it { expect(subject).to match result }
+    end
   end
 end
