@@ -43,8 +43,14 @@ api.records.get(app, query, fields) # => {"records" => [{...}, ...]}
 
 ```ruby
 # Record register(single record)
+# Use Hash
 app = 7
 record = {"number" => {"value" => "123456"}}
+api.record.register(app, record) # => {"id" => "100"}
+
+# Use Kintone::Type::Record
+app = 7
+record = Kintone::Type::Record.new({number: "123456"})
 api.record.register(app, record) # => {"id" => "100"}
 
 # Records register(batch)
@@ -53,16 +59,22 @@ records = [{"number" => {"value" => "123456"}}, {"number" => {"value" => "7890"}
 api.records.register(app, records) # => {"ids" => ["100", "101"]}
 
 # Deprecated
-api.record.create(app, record) # => {"id" => "100"}
-api.records.create(app, records) # => {"ids" => ["100", "101"]}
+api.record.create(app, record)
+api.records.create(app, records)
 ```
 
 ### <a name="record_update"> Record update
 
 ```ruby
 # Record update(single record)
+# Use Hash
 app = 4; id = 1
 record = {"string_multi" => {"value" => "changed!"}}
+api.record.update(app, id, record) # => {}
+
+# Use Kintone::Type::Record
+app = 4; id = 1
+record = Kintone::Type::Record.new({string_multi: "changed!"})
 api.record.update(app, id, record) # => {}
 
 # Records update(batch)
