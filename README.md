@@ -109,12 +109,12 @@ api.space.get(id) # => { "id" => "1", "name" => "space", "defaultThread" => "3",
 
 # Create space
 id = 1; name = "sample space"
-members = [{"entry" => {"type" => "USER", "code" => "user1"}, "isAdmin": true}, ...]
+members = [{"entity" => {"type" => "USER", "code" => "user1"}, "isAdmin": true}, ...]
 api.template_space.create(id, name, members, is_guest: true, fixed_member: false) # => {"id" => "1"}
 
 # Space body update
 id = 1; body = "<b>awesome space!</b>"
-api.space_body.update(id, body)
+api.space_body.update(id, body) # => {}
 
 # Space delete
 id = 1
