@@ -5,7 +5,7 @@ class Kintone::Api
   class Guest
     extend Forwardable
 
-    GUEST_PATH = "/k/guest/%s/v1/"
+    GUEST_PATH = '/k/guest/%s/v1/'
 
     def initialize(space_id, api)
       @api = api
@@ -13,31 +13,39 @@ class Kintone::Api
     end
 
     def get_url(command)
-      return @guest_path + (COMMAND % command)
+      @guest_path + (COMMAND % command)
     end
 
     def record
-      return Kintone::Command::Record.new(self)
+      Kintone::Command::Record.new(self)
     end
 
     def records
-      return Kintone::Command::Records.new(self)
+      Kintone::Command::Records.new(self)
     end
 
     def form
-      return Kintone::Command::Form.new(self)
+      Kintone::Command::Form.new(self)
     end
 
     def app_acl
-      return Kintone::Command::AppAcl.new(self)
+      Kintone::Command::AppAcl.new(self)
     end
 
     def record_acl
-      return Kintone::Command::RecordAcl.new(self)
+      Kintone::Command::RecordAcl.new(self)
     end
 
     def field_acl
-      return Kintone::Command::FieldAcl.new(self)
+      Kintone::Command::FieldAcl.new(self)
+    end
+
+    def space
+      Kintone::Command::Space.new(self)
+    end
+
+    def space_body
+      Kintone::Command::SpaceBody.new(self)
     end
 
     def_delegators :@api, :get, :post, :put, :delete
