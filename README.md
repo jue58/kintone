@@ -2,6 +2,10 @@
 
 A Ruby gem for communicating with the [kintone](https://kintone.cybozu.com/us/) REST API
 
+## Requirements
+
+- 2.1.0 or later
+
 ## Installation
 
     gem install kintone
