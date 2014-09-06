@@ -40,7 +40,7 @@ describe Kintone::Command::Record do
     end
   end
 
-  describe '#create' do
+  describe '#register' do
     before(:each) do
       stub_request(
         :post,
@@ -50,7 +50,7 @@ describe Kintone::Command::Record do
         .to_return(body: "{\"id\":\"100\"}", status: 200)
     end
 
-    subject { target.create(app, record) }
+    subject { target.register(app, record) }
 
     let(:app) { 7 }
     let(:record) { hash_record }

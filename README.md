@@ -45,11 +45,15 @@ api.records.get(app, query, fields) # => {"records" => [{...}, ...]}
 # Record register(single record)
 app = 7
 record = {"number" => {"value" => "123456"}}
-api.record.create(app, record) # => {"id" => "100"}
+api.record.register(app, record) # => {"id" => "100"}
 
 # Records register(batch)
 app = 7
 records = [{"number" => {"value" => "123456"}}, {"number" => {"value" => "7890"}}]
+api.records.register(app, records) # => {"ids" => ["100", "101"]}
+
+# Deprecated
+api.record.create(app, record) # => {"id" => "100"}
 api.records.create(app, records) # => {"ids" => ["100", "101"]}
 ```
 

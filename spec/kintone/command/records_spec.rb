@@ -90,8 +90,8 @@ describe Kintone::Command::Records do
     end
   end
 
-  describe '#create' do
-    subject { target.create(app, records) }
+  describe '#register' do
+    subject { target.register(app, records) }
 
     context '' do
       def records_data
