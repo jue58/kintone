@@ -18,14 +18,15 @@ api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
 ```
 
 ### Supported API
-- Record retrieval
-- Record register
-- Record update
-- Record delete
-- Format retrieval
-- Permissions
+- [Record retrieval](#record_retrieval)
+- [Record register](#record_register)
+- [Record update](#record_update)
+- [Record delete](#record_delete)
+- [Format retrieval](#format_retrieval)
+- [Permissions](#permissions)
+- [Space management]("space_management")
 
-### Record retrieval
+### <a name="record_retrieval"> Record retrieval
 
 ```ruby
 # Record retrieval(Assign by Record Number)
@@ -38,7 +39,7 @@ query = "updated_time > \"2012-02-03T09:00:00+0900\" and updated_time < \"2012-0
 api.records.get(app, query, fields) # => {"records" => [{...}, ...]}
 ```
 
-### Record register
+### <a name="record_register"> Record register
 
 ```ruby
 # Record register(single record)
@@ -52,7 +53,7 @@ records = [{"number" => {"value" => "123456"}}, {"number" => {"value" => "7890"}
 api.records.create(app, records) # => {"ids" => ["100", "101"]}
 ```
 
-### Record update
+### <a name="record_update"> Record update
 
 ```ruby
 # Record update(single record)
@@ -66,21 +67,21 @@ records = [{"id" => 1, "string_multi" => {"value" => "abcdef"}}, {"id" => 2, "st
 api.records.update(app, records) # => {}
 ```
 
-### Record delete
+### <a name="record_delete"> Record delete
 
 ```ruby
 app = 8; ids = [100, 80]
 api.records.delete(app, ids) # => {}
 ```
 
-### Format retrieval
+### <a name="format_retrieval"> Format retrieval
 
 ```ruby
 app = 4
 api.form.get(app) # => {"properties" => [{...}, ...]}
 ```
 
-### Permissions
+### <a name="permissions"> Permissions
 
 ```ruby
 # App
@@ -97,6 +98,27 @@ api.record_acl.update(id, rights) # => {}
 id = 1
 rights = [{"code" => "Single_line_text_0", "entities" => [{"entity" => {...}, "accesibility" => "WRITE"}, ...]}, ...]
 api.field_acl.update(id, rights) # => {}
+```
+
+### <a name="space_management"> Space management
+
+```ruby
+# Space information reference
+id = 1
+api.space.get(id) # => { "id" => "1", "name" => "space", "defaultThread" => "3", "isPrivate" => true, ...}
+
+# Create space
+id = 1; name = "sample space"
+members = [{"entry" => {"type" => "USER", "code" => "user1"}, "isAdmin": true}, ...]
+api.template_space.create(id, name, members, is_guest: true, fixed_member: false) # => {"id" => "1"}
+
+# Space body update
+id = 1; body = "<b>awesome space!</b>"
+api.space_body.update(id, body)
+
+# Space delete
+id = 1
+api.space.delete(id) # => {}
 ```
 
 ### Other examples
@@ -118,4 +140,4 @@ api.post(url, body) # => {"ids" => ["100","101"]}
 api.guest(1).record.get(8, 100)
 ```
 
-see also [kintone developers](https://developers.kintone.com/)
+see also [kintone developers](http://developers.kintone.com/)
