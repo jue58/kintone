@@ -11,8 +11,12 @@ class Kintone::Command::Records < Kintone::Command
     @api.get(@url, params)
   end
 
-  def create(app, records)
+  def register(app, records)
     @api.post(@url, app: app, records: records)
+  end
+
+  def create(app, records)
+    register(app, records)
   end
 
   def update(app, records)
