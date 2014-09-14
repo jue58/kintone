@@ -12,7 +12,7 @@ class Kintone::Command::Records < Kintone::Command
   end
 
   def register(app, records)
-    @api.post(@url, app: app, records: records)
+    @api.post(@url, app: app, records: records.to_kintone)
   end
 
   def create(app, records)
@@ -20,7 +20,7 @@ class Kintone::Command::Records < Kintone::Command
   end
 
   def update(app, records)
-    @api.put(@url, app: app, records: records)
+    @api.put(@url, app: app, records: records.to_kintone)
   end
 
   def delete(app, ids)

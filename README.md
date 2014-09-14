@@ -28,7 +28,7 @@ api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
 - [Record delete](#record_delete)
 - [Format retrieval](#format_retrieval)
 - [Permissions](#permissions)
-- [Space management]("space_management")
+- [Space management](#space_management)
 
 ### <a name="record_retrieval"> Record retrieval
 
@@ -54,12 +54,24 @@ api.record.register(app, record) # => {"id" => "100"}
 
 # Use Kintone::Type::Record
 app = 7
-record = Kintone::Type::Record.new({number: "123456"})
+record = Kintone::Type::Record.new(number: "123456")
 api.record.register(app, record) # => {"id" => "100"}
 
 # Records register(batch)
+# Use Hash
 app = 7
-records = [{"number" => {"value" => "123456"}}, {"number" => {"value" => "7890"}}]
+records = [
+  {"number" => {"value" => "123456"}},
+  {"number" => {"value" => "7890"}}
+]
+api.records.register(app, records) # => {"ids" => ["100", "101"]}
+
+# Use Kintone::Type::Record
+app = 7
+records = [
+  Kintone::Type::Record.new(number: "123456"),
+  Kintone::Type::Record.new(number: "7890")
+]
 api.records.register(app, records) # => {"ids" => ["100", "101"]}
 
 # Deprecated
@@ -82,8 +94,20 @@ record = Kintone::Type::Record.new({string_multi: "changed!"})
 api.record.update(app, id, record) # => {}
 
 # Records update(batch)
+# Use Hash
 app = 4
-records = [{"id" => 1, "string_multi" => {"value" => "abcdef"}}, {"id" => 2, "string_multi" => {"value" => "opqrstu"}}]
+records = [
+  {"id" => 1, "string_multi" => {"value" => "abcdef"}},
+  {"id" => 2, "string_multi" => {"value" => "opqrstu"}}
+]
+api.records.update(app, records) # => {}
+
+# Use Kintone::Type::Record
+app = 4
+records = [
+  {id: 1, Kintone::Type::Record.new(string_multi: "abcdef")},
+  {id: 2, Kintone::Type::Record.new(string_multi: "opqrstu")}
+]
 api.records.update(app, records) # => {}
 ```
 

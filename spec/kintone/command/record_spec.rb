@@ -66,6 +66,10 @@ describe Kintone::Command::Record do
         [record_record, { 'id' => '100' }]
       ]
     end
+
+    with_them do
+      it { expect(subject).to eq result }
+    end
   end
 
   describe '#update' do
