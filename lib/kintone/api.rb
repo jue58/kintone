@@ -12,6 +12,7 @@ require 'kintone/command/template_space'
 require 'kintone/command/space'
 require 'kintone/command/space_body'
 require 'kintone/api/guest'
+require 'kintone/query'
 
 class Kintone::Api
   BASE_PATH = '/k/v1/'

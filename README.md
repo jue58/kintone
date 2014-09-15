@@ -4,7 +4,7 @@ A Ruby gem for communicating with the [kintone](https://kintone.cybozu.com/us/) 
 
 ## Requirements
 
-- 2.1.0 or later
+- ruby 2.1.0 or later
 
 ## Installation
 
@@ -42,6 +42,74 @@ app = 8; fields = ["record_id", "created_time", "dropdown"]
 query = "updated_time > \"2012-02-03T09:00:00+0900\" and updated_time < \"2012-02-03T10:00:00+0900\" order by record_id asc limit 10 offset 20"
 api.records.get(app, query, fields) # => {"records" => [{...}, ...]}
 ```
+
+Query helper
+
+```ruby
+query =
+  Kintone::Query.new do
+    field(:updated_time) > "2012-02-03T09:00:00+0900"
+    and!
+    field(:updated_time) < "2012-02-03T10:00:00+0900"
+    order_by(:record_id)
+    limit(10)
+    offset(20)
+  end
+query.to_s # => "updated_time > \"2012-02-03T09:00:00+0900\" and updated_time < \"2012-02-03T10:00:00+0900\" order by record_id asc limit 10 offset 20"
+api.records.get(app, query, fields)
+
+# Example
+Kintone::Query.new do
+  field(:Created_datetime) >= last_month
+  and!
+  precede do
+    field(:text).like("Hello")
+    and!
+    field(:number) == 200
+  end
+  or!
+  precede do
+    field(:number) > 100
+    and!
+    field(:Created_by).in([login_user])
+  end
+  order_by(:record_id, :desc)
+  limit(10)
+  offset(20)
+end
+# => "Created_datetime >= LAST_MONTH() and (text like \"Hello\" and number = 200) or (number > 100 and Created_by in (LOGINUSER())) order by record_id desc limit 10 offset 20"
+```
+
+operator symbol | query helper
+--- | ---
+= | field(:code) == other
+!= | field(:code) != other
+> | field(:code) > other
+< | field(:code) < other
+>= | field(:code) >= other
+<= | field(:code) <= other
+in | field(:code).in(["A", "B"])
+not in | field(:code).not_in(["A", "B"])
+like | field(:code).like("Hello")
+not like | field(:code).not_like("Hello")
+and | and!
+or | or!
+() | precede do; end
+
+function | query helper
+--- | ---
+LOGINUSER() | login_user
+NOW() | now
+TODAY() | today
+THIS_MONTH() | this_month
+LAST_MONTH() | last_month
+THIS_YEAR() | this_year
+
+option | query helper
+--- | ---
+order by | order_by(:code, :asc or :desc)
+limit | limit(20)
+offset | offset(30)
 
 ### <a name="record_register"> Record register
 
