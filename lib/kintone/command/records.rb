@@ -6,7 +6,7 @@ class Kintone::Command::Records < Kintone::Command
   end
 
   def get(app, query, fields)
-    params = { app: app, query: query }
+    params = { app: app, query: query.to_s }
     fields.each_with_index { |v, i| params["fields[#{i}]"] = v }
     @api.get(@url, params)
   end
