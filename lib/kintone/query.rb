@@ -64,6 +64,10 @@ class Kintone::Query
     @query.map(&:to_s).join(' ')
   end
 
+  def inspect
+    @query.inspect
+  end
+
   private
 
   def function_string(function)
@@ -126,6 +130,10 @@ class Kintone::Query
 
     def to_s
       "#{@code} #{@condition} #{@other}"
+    end
+
+    def inspect
+      to_s
     end
 
     private
