@@ -11,6 +11,7 @@ require 'kintone/command/field_acl'
 require 'kintone/command/template_space'
 require 'kintone/command/space'
 require 'kintone/command/space_body'
+require 'kintone/command/space_thread'
 require 'kintone/api/guest'
 require 'kintone/query'
 
@@ -110,5 +111,9 @@ class Kintone::Api
 
   def space_body
     Kintone::Command::SpaceBody.new(self)
+  end
+
+  def space_thread
+    Kintone::Command::SpaceThread.new(self)
   end
 end

@@ -228,6 +228,11 @@ api.template_space.create(id, name, members, is_guest: true, fixed_member: false
 id = 1; body = "<b>awesome space!</b>"
 api.space_body.update(id, body) # => {}
 
+# Space thread update
+id = 1; name = "thread name"
+body = "<b>awesome thread!</b>"
+api.space_thread.update(id, name: name, body: body) # => {}
+
 # Space delete
 id = 1
 api.space.delete(id) # => {}
