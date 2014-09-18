@@ -12,6 +12,7 @@ require 'kintone/command/template_space'
 require 'kintone/command/space'
 require 'kintone/command/space_body'
 require 'kintone/command/space_thread'
+require 'kintone/command/space_members'
 require 'kintone/api/guest'
 require 'kintone/query'
 
@@ -115,5 +116,9 @@ class Kintone::Api
 
   def space_thread
     Kintone::Command::SpaceThread.new(self)
+  end
+
+  def space_members
+    Kintone::Command::SpaceMembers.new(self)
   end
 end

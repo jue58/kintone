@@ -149,4 +149,10 @@ describe Kintone::Api::Guest do
 
     it { expect(subject).to be_a_kind_of(Kintone::Command::SpaceThread) }
   end
+
+  describe '#space_members' do
+    subject { target.space_members }
+
+    it { expect(subject).to be_a_kind_of(Kintone::Command::SpaceMembers) }
+  end
 end

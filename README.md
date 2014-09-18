@@ -215,7 +215,7 @@ api.field_acl.update(id, rights) # => {}
 ### <a name="space_management"> Space management
 
 ```ruby
-# Space information reference
+# Space information
 id = 1
 api.space.get(id) # => { "id" => "1", "name" => "space", "defaultThread" => "3", "isPrivate" => true, ...}
 
@@ -227,6 +227,12 @@ api.template_space.create(id, name, members, is_guest: true, fixed_member: false
 # Space body update
 id = 1; body = "<b>awesome space!</b>"
 api.space_body.update(id, body) # => {}
+
+# Space members
+id = 1
+members = api.space_members.get(id) # => {"members"=>[{"entity"=>{"type"=>"USER", "code"=> "user1"}, ...}, ...]}
+members << {"entity" => {"type" => "GROUP", "code" => "group1"}}
+members = api.space_members.update(id, members) # => {}
 
 # Space thread update
 id = 1; name = "thread name"
