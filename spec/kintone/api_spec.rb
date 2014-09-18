@@ -173,4 +173,10 @@ describe Kintone::Api do
 
     it { expect(subject).to be_a_kind_of(Kintone::Command::SpaceBody) }
   end
+
+  describe '#space_thread' do
+    subject { target.space_thread }
+
+    it { expect(subject).to be_a_kind_of(Kintone::Command::SpaceThread) }
+  end
 end

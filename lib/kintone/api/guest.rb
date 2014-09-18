@@ -48,6 +48,10 @@ class Kintone::Api
       Kintone::Command::SpaceBody.new(self)
     end
 
+    def space_thread
+      Kintone::Command::SpaceThread.new(self)
+    end
+
     def_delegators :@api, :get, :post, :put, :delete
   end
 end
