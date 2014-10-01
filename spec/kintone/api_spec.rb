@@ -15,7 +15,7 @@ describe Kintone::Api do
 
     context '' do
       let(:command) { 'path' }
-      it { expect(subject).to eq('/k/v1/path.json') }
+      it { is_expected.to eq('/k/v1/path.json') }
     end
   end
 
@@ -25,7 +25,7 @@ describe Kintone::Api do
     context '引数が数値の1の時' do
       let(:space) { 1 }
 
-      it { expect(subject).to be_a_kind_of(Kintone::Api::Guest) }
+      it { is_expected.to be_a_kind_of(Kintone::Api::Guest) }
       it { expect(subject.instance_variable_get(:@guest_path)).to eq('/k/guest/1/v1/') }
     end
 
@@ -54,7 +54,7 @@ describe Kintone::Api do
     let(:path) { '/k/v1/path' }
     let(:params) { { 'p1' => 'abc', 'p2' => 'def' } }
 
-    it { expect(subject).to eq 'abc' => 'def' }
+    it { is_expected.to eq 'abc' => 'def' }
   end
 
   describe '#post' do
@@ -77,7 +77,7 @@ describe Kintone::Api do
     let(:path) { '/k/v1/path' }
     let(:body) { { 'p1' => 'abc', 'p2' => 'def' } }
 
-    it { expect(subject).to eq 'abc' => 'def' }
+    it { is_expected.to eq 'abc' => 'def' }
   end
 
   describe '#put' do
@@ -100,7 +100,7 @@ describe Kintone::Api do
     let(:path) { '/k/v1/path' }
     let(:body) { { 'p1' => 'abc', 'p2' => 'def' } }
 
-    it { expect(subject).to eq 'abc' => 'def' }
+    it { is_expected.to eq 'abc' => 'def' }
   end
 
   describe '#delete' do
@@ -117,72 +117,78 @@ describe Kintone::Api do
     let(:path) { '/k/v1/path' }
     let(:params) { { 'p1' => 'abc', 'p2' => 'def' } }
 
-    it { expect(subject).to eq 'abc' => 'def' }
+    it { is_expected.to eq 'abc' => 'def' }
   end
 
   describe '#record' do
     subject { target.record }
 
-    it { expect(subject).to be_a_kind_of(Kintone::Command::Record) }
+    it { is_expected.to be_a_kind_of(Kintone::Command::Record) }
   end
 
   describe '#records' do
     subject { target.records }
 
-    it { expect(subject).to be_a_kind_of(Kintone::Command::Records) }
+    it { is_expected.to be_a_kind_of(Kintone::Command::Records) }
   end
 
   describe '#form' do
     subject { target.form }
 
-    it { expect(subject).to be_a_kind_of(Kintone::Command::Form) }
+    it { is_expected.to be_a_kind_of(Kintone::Command::Form) }
   end
 
   describe '#app_acl' do
     subject { target.app_acl }
 
-    it { expect(subject).to be_a_kind_of(Kintone::Command::AppAcl) }
+    it { is_expected.to be_a_kind_of(Kintone::Command::AppAcl) }
   end
 
   describe '#record_acl' do
     subject { target.record_acl }
 
-    it { expect(subject).to be_a_kind_of(Kintone::Command::RecordAcl) }
+    it { is_expected.to be_a_kind_of(Kintone::Command::RecordAcl) }
   end
 
   describe '#field_acl' do
     subject { target.field_acl }
 
-    it { expect(subject).to be_a_kind_of(Kintone::Command::FieldAcl) }
+    it { is_expected.to be_a_kind_of(Kintone::Command::FieldAcl) }
   end
 
   describe '#template_space' do
     subject { target.template_space }
 
-    it { expect(subject).to be_a_kind_of(Kintone::Command::TemplateSpace) }
+    it { is_expected.to be_a_kind_of(Kintone::Command::TemplateSpace) }
   end
 
   describe '#space' do
     subject { target.space }
 
-    it { expect(subject).to be_a_kind_of(Kintone::Command::Space) }
+    it { is_expected.to be_a_kind_of(Kintone::Command::Space) }
   end
 
   describe '#space_body' do
     subject { target.space_body }
 
-    it { expect(subject).to be_a_kind_of(Kintone::Command::SpaceBody) }
+    it { is_expected.to be_a_kind_of(Kintone::Command::SpaceBody) }
   end
 
   describe '#space_thread' do
     subject { target.space_thread }
 
-    it { expect(subject).to be_a_kind_of(Kintone::Command::SpaceThread) }
+    it { is_expected.to be_a_kind_of(Kintone::Command::SpaceThread) }
   end
 
   describe '#space_members' do
     subject { target.space_members }
 
-    it { expect(subject).to be_a_kind_of(Kintone::Command::SpaceMembers) }
+    it { is_expected.to be_a_kind_of(Kintone::Command::SpaceMembers) }
+  end
+
+  describe '#guests' do
+    subject { target.guests }
+
+    it { is_expected.to be_a_kind_of(Kintone::Command::Guests) }
   end
 end
