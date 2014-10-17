@@ -165,16 +165,16 @@ api.record.update(app, id, record) # => {}
 # Use Hash
 app = 4
 records = [
-  {"id" => 1, "string_multi" => {"value" => "abcdef"}},
-  {"id" => 2, "string_multi" => {"value" => "opqrstu"}}
+  {"id" => 1, "record" => {"string_multi" => {"value" => "abcdef"}}},
+  {"id" => 2, "record" => {"string_multi" => {"value" => "opqrstu"}}}
 ]
 api.records.update(app, records) # => {}
 
 # Use Kintone::Type::Record
 app = 4
 records = [
-  {id: 1, Kintone::Type::Record.new(string_multi: "abcdef")},
-  {id: 2, Kintone::Type::Record.new(string_multi: "opqrstu")}
+  {id: 1, record: Kintone::Type::Record.new(string_multi: "abcdef")},
+  {id: 2, record: Kintone::Type::Record.new(string_multi: "opqrstu")}
 ]
 api.records.update(app, records) # => {}
 ```
