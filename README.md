@@ -29,6 +29,7 @@ api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
 - [Format retrieval](#format_retrieval)
 - [Permissions](#permissions)
 - [Space management](#space_management)
+- [Guests](#guests)
 
 ### <a name="record_retrieval"> Record retrieval
 
@@ -242,6 +243,16 @@ api.space_thread.update(id, name: name, body: body) # => {}
 # Space delete
 id = 1
 api.space.delete(id) # => {}
+```
+
+### <a name="guests"> Guests
+
+```ruby
+guests = [{code: "hoge@example.com", password: "p@ssword", timezone: "Asia/Tokyo", name: "Tokyo, Saburo", ...}, ...]
+api.guests.create(guests) # => {}
+
+guests = ["guest1@example.com", "guest2@example.com", ...]
+api.guests.delete(guests)
 ```
 
 ### Other examples
