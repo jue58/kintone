@@ -250,9 +250,6 @@ api.space.delete(id) # => {}
 ```ruby
 guests = [{code: "hoge@example.com", password: "p@ssword", timezone: "Asia/Tokyo", name: "Tokyo, Saburo", ...}, ...]
 api.guests.create(guests) # => {}
-
-guests = ["guest1@example.com", "guest2@example.com", ...]
-api.guests.delete(guests)
 ```
 
 ### Other examples

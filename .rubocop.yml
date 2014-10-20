@@ -28,3 +28,9 @@ Style/StringLiterals:
 Style/WordArray:
   Exclude:
     - 'spec/**/**'
+
+Style/AsciiComments:
+  Enabled: false
+
+CyclomaticComplexity:
+  Max: 10
