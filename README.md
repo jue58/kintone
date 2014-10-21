@@ -240,6 +240,11 @@ id = 1; name = "thread name"
 body = "<b>awesome thread!</b>"
 api.space_thread.update(id, name: name, body: body) # => {}
 
+# Space guests
+id = 1
+guests = ["hoge@example.com"]
+api.guest(1).space_guests.update(id, guests) # => {}
+
 # Space delete
 id = 1
 api.space.delete(id) # => {}
