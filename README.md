@@ -253,8 +253,13 @@ api.space.delete(id) # => {}
 ### <a name="guests"> Guests
 
 ```ruby
+# Add guest
 guests = [{code: "hoge@example.com", password: "p@ssword", timezone: "Asia/Tokyo", name: "Tokyo, Saburo", ...}, ...]
 api.guests.create(guests) # => {}
+
+# delete guest
+guests = ["hoge@example.com", "fuga@example.com"]
+api.guests.delete(guests) # => {}
 ```
 
 ### Other examples

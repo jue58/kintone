@@ -41,7 +41,7 @@ describe Kintone::Command::Space do
           :delete,
           'https://example.cybozu.com/k/v1/space.json'
         )
-          .with(query: { id: 1 })
+          .with(body: { id: 1 }.to_json)
           .to_return(body: '{}', status: 200)
       end
 

@@ -107,9 +107,12 @@ describe Kintone::Api do
     before(:each) do
       stub_request(
         :delete,
-        'https://www.example.com/k/v1/path?p1=abc&p2=def'
+        'https://www.example.com/k/v1/path'
       )
-        .with(headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' })
+        .with(
+          body: { 'p1' => 'abc', 'p2' => 'def' }.to_json,
+          headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }
+        )
         .to_return(body: "{\"abc\":\"def\"}", status: 200)
     end
 

@@ -82,9 +82,12 @@ describe Kintone::Api::Guest do
     before(:each) do
       stub_request(
         :delete,
-        'https://example.cybozu.com/k/guest/1/v1/path.json?p1=abc&p2=def'
+        'https://example.cybozu.com/k/guest/1/v1/path.json'
       )
-        .with(headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' })
+        .with(
+          body: { 'p1' => 'abc', 'p2' => 'def' }.to_json,
+          headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }
+        )
         .to_return(body: "{\"abc\":\"def\"}", status: 200)
     end
 
