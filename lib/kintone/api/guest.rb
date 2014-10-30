@@ -1,5 +1,6 @@
 require 'forwardable'
 require 'kintone/api'
+require 'kintone/command/space_guests'
 
 class Kintone::Api
   class Guest
@@ -54,6 +55,10 @@ class Kintone::Api
 
     def space_members
       Kintone::Command::SpaceMembers.new(self)
+    end
+
+    def space_guests
+      Kintone::Command::SpaceGuests.new(self)
     end
 
     def_delegators :@api, :get, :post, :put, :delete
