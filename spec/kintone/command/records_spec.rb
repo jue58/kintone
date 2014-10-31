@@ -186,8 +186,9 @@ describe Kintone::Command::Records do
       before(:each) do
         stub_request(
           :delete,
-          'https://example.cybozu.com/k/v1/records.json?app=1&ids[0]=100&ids[1]=80'
+          'https://example.cybozu.com/k/v1/records.json'
         )
+          .with(body: { app: app, ids: ids }.to_json)
           .to_return(body: '{}', status: 200)
       end
 

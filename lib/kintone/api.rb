@@ -70,11 +70,12 @@ class Kintone::Api
     response.body
   end
 
-  def delete(url, params = nil)
+  def delete(url, body = nil)
     response =
       @connection.delete do |request|
         request.url url
-        request.params = params
+        request.headers['Content-Type'] = 'application/json'
+        request.body = body.to_json
       end
     response.body
   end

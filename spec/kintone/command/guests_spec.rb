@@ -39,4 +39,27 @@ describe Kintone::Command::Guests do
 
     it { is_expected.to be_truthy }
   end
+
+  describe '#delete' do
+    before(:each) do
+      stub_request(
+        :delete,
+        'https://example.cybozu.com/k/v1/guests.json'
+      )
+        .with(body: { guests: guests }.to_json)
+        .to_return(body: '{}', status: 200)
+    end
+
+    subject { target.delete(guests) }
+
+    let(:guests) do
+      [
+        'guest1@example.com',
+        'guest2@example.com',
+        'guest3@example.com'
+      ]
+    end
+
+    it { is_expected.to be_truthy }
+  end
 end
