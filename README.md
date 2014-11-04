@@ -30,6 +30,7 @@ api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
 - [Permissions](#permissions)
 - [Space management](#space_management)
 - [Guests](#guests)
+- [Application information](#application_information)
 
 ### <a name="record_retrieval"> Record retrieval
 
@@ -260,6 +261,13 @@ api.guests.create(guests) # => {}
 # delete guest
 guests = ["hoge@example.com", "fuga@example.com"]
 api.guests.delete(guests) # => {}
+```
+
+### <a name="application_information"> Application information
+
+```ruby
+id = 4
+api.app.get(id) # => {"appId" => "4", "code" => "", ...}
 ```
 
 ### Other examples

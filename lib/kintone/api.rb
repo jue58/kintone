@@ -14,6 +14,7 @@ require 'kintone/command/space_body'
 require 'kintone/command/space_thread'
 require 'kintone/command/space_members'
 require 'kintone/command/guests'
+require 'kintone/command/app'
 require 'kintone/api/guest'
 require 'kintone/query'
 
@@ -126,5 +127,9 @@ class Kintone::Api
 
   def guests
     Kintone::Command::Guests.new(self)
+  end
+
+  def app
+    Kintone::Command::App.new(self)
   end
 end

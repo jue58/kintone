@@ -194,4 +194,10 @@ describe Kintone::Api do
 
     it { is_expected.to be_a_kind_of(Kintone::Command::Guests) }
   end
+
+  describe '#app' do
+    subject { target.app }
+
+    it { is_expected.to be_a_kind_of(Kintone::Command::App) }
+  end
 end

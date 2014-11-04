@@ -61,6 +61,10 @@ class Kintone::Api
       Kintone::Command::SpaceGuests.new(self)
     end
 
+    def app
+      Kintone::Command::App.new(self)
+    end
+
     def_delegators :@api, :get, :post, :put, :delete
   end
 end
