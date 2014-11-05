@@ -15,6 +15,7 @@ require 'kintone/command/space_thread'
 require 'kintone/command/space_members'
 require 'kintone/command/guests'
 require 'kintone/command/app'
+require 'kintone/command/apps'
 require 'kintone/command/apis'
 require 'kintone/api/guest'
 require 'kintone/query'
@@ -132,6 +133,10 @@ class Kintone::Api
 
   def app
     Kintone::Command::App.new(self)
+  end
+
+  def apps
+    Kintone::Command::Apps.new(self)
   end
 
   def apis

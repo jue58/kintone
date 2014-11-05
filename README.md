@@ -269,6 +269,9 @@ api.guests.delete(guests) # => {}
 ```ruby
 id = 4
 api.app.get(id) # => {"appId" => "4", "code" => "", ...}
+
+name = "test"; codes = ["FOO", "BAR"]
+api.apps.get({ name: name, codes: codes }) # => { "apps" => [{...}, ...] }
 ```
 
 ### <a name="api_information"> API information

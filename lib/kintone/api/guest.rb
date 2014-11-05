@@ -65,6 +65,10 @@ class Kintone::Api
       Kintone::Command::App.new(self)
     end
 
+    def apps
+      Kintone::Command::Apps.new(self)
+    end
+
     def_delegators :@api, :get, :post, :put, :delete
   end
 end

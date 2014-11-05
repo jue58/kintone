@@ -25,7 +25,6 @@ class Kintone::Command::Records < Kintone::Command
 
   def delete(app, ids)
     params = { app: app, ids: ids }
-    # ids.each_with_index { |v, i| params["ids[#{i}]"] = v }
     @api.delete(@url, params)
   end
 end

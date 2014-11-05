@@ -170,4 +170,10 @@ describe Kintone::Api::Guest do
 
     it { is_expected.to be_a_kind_of(Kintone::Command::App) }
   end
+
+  describe '#apps' do
+    subject { target.apps }
+
+    it { is_expected.to be_a_kind_of(Kintone::Command::Apps) }
+  end
 end
