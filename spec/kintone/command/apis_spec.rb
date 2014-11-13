@@ -29,4 +29,29 @@ describe Kintone::Command::Apis do
 
     it { is_expected.to eq(response_data) }
   end
+
+  describe '#get_details_of' do
+    before(:each) do
+      stub_request(
+        :get,
+        'https://example.cybozu.com/k/v1/apis/records/get.json'
+      )
+        .to_return(body: response_data.to_json, status: 200)
+    end
+
+    subject { target.get_details_of(link) }
+
+    let(:link) { 'apis/records/get.json' }
+
+    def response_data
+      {
+        'id' => 'GetRecords',
+        'baseUrl' => 'https://example.cybozu.com/k/v1/',
+        'path' => 'records.json',
+        'httpMethod' => 'GET'
+      }
+    end
+
+    it { is_expected.to eq(response_data) }
+  end
 end
