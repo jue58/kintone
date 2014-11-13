@@ -15,6 +15,7 @@ require 'kintone/command/space_thread'
 require 'kintone/command/space_members'
 require 'kintone/command/guests'
 require 'kintone/command/app'
+require 'kintone/command/apis'
 require 'kintone/api/guest'
 require 'kintone/query'
 
@@ -42,7 +43,7 @@ class Kintone::Api
     Kintone::Api::Guest.new(space_id, self)
   end
 
-  def get(url, params = nil)
+  def get(url, params = {})
     response =
       @connection.get do |request|
         request.url url
@@ -131,5 +132,9 @@ class Kintone::Api
 
   def app
     Kintone::Command::App.new(self)
+  end
+
+  def apis
+    Kintone::Command::Apis.new(self)
   end
 end
