@@ -44,17 +44,47 @@ describe Kintone::Api do
     before(:each) do
       stub_request(
         :get,
-        'https://www.example.com/k/v1/path?p1=abc&p2=def'
+        'https://www.example.com/k/v1/path'
       )
-        .with(headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' })
+        .with(
+          query: query,
+          headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }
+        )
         .to_return(body: "{\"abc\":\"def\"}", status: 200)
     end
 
     subject { target.get(path, params) }
-    let(:path) { '/k/v1/path' }
-    let(:params) { { 'p1' => 'abc', 'p2' => 'def' } }
 
-    it { is_expected.to eq 'abc' => 'def' }
+    let(:path) { '/k/v1/path' }
+
+    context 'with some params' do
+      let(:params) { { 'p1' => 'abc', 'p2' => 'def' } }
+      let(:query) { 'p1=abc&p2=def' }
+
+      it { is_expected.to eq 'abc' => 'def' }
+    end
+
+    context 'with empty params' do
+      let(:params) { {} }
+      let(:query) { nil }
+
+      it { is_expected.to eq 'abc' => 'def' }
+    end
+
+    context 'with nil' do
+      let(:params) { nil }
+      let(:query) { nil }
+
+      it { expect { subject }.to raise_error NoMethodError }
+    end
+
+    context 'with no params' do
+      subject { target.get(path) }
+
+      let(:query) { nil }
+
+      it { is_expected.to eq 'abc' => 'def' }
+    end
   end
 
   describe '#post' do
@@ -199,5 +229,11 @@ describe Kintone::Api do
     subject { target.app }
 
     it { is_expected.to be_a_kind_of(Kintone::Command::App) }
+  end
+
+  describe '#apis' do
+    subject { target.apis }
+
+    it { is_expected.to be_a_kind_of(Kintone::Command::Apis) }
   end
 end
