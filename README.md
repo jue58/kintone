@@ -31,6 +31,7 @@ api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
 - [Space management](#space_management)
 - [Guests](#guests)
 - [Application information](#application_information)
+- [API information](#api_information)
 
 ### <a name="record_retrieval"> Record retrieval
 
@@ -268,6 +269,16 @@ api.guests.delete(guests) # => {}
 ```ruby
 id = 4
 api.app.get(id) # => {"appId" => "4", "code" => "", ...}
+```
+
+### <a name="api_information"> API information
+
+```ruby
+api.apis.get # => {"baseUrl" => "https://example.cybozu.com/k/v1/", "apis" => {"records/get" => {"link" => "apis/records/get.json"}}}
+
+api.apis.get_details_of("apis/records/get.json") # => {"id" => "GetRecords", "baseUrl" => "https://example.cybozu.com/k/v1/", ...}
+
+api.apis.get_details_of_key("records/get") # => {"id" => "GetRecords", "baseUrl" => "https://example.cybozu.com/k/v1/", ...}
 ```
 
 ### Other examples
