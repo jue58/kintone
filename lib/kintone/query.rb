@@ -65,7 +65,7 @@ class Kintone::Query
   end
 
   def inspect
-    @query.inspect
+    to_s
   end
 
   private
