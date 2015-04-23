@@ -25,10 +25,10 @@ class Kintone::Api
 
   def initialize(domain, user, password)
     token = Base64.encode64("#{user}:#{password}")
+    url = "https://#{domain}"
+    headers = { 'X-Cybozu-Authorization' => token }
     @connection =
-      Faraday.new(url: "https://#{domain}",
-                  headers: { 'X-Cybozu-Authorization' => token },
-                  ssl: false) do |builder|
+      Faraday.new(url: url, headers: headers) do |builder|
         builder.adapter :net_http
         builder.request :url_encoded
         builder.response :json
