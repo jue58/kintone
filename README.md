@@ -1,5 +1,7 @@
 # kintone
 
+[![Build Status](https://travis-ci.org/jue58/kintone.svg?branch=master)](https://travis-ci.org/jue58/kintone)
+
 A Ruby gem for communicating with the [kintone](https://kintone.cybozu.com/us/) REST API
 
 ## Requirements
