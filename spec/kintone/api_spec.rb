@@ -242,4 +242,10 @@ describe Kintone::Api do
 
     it { is_expected.to be_a_kind_of(Kintone::Command::Apis) }
   end
+
+  describe '#bulk' do
+    subject { target.bulk }
+
+    it { is_expected.to be_a_kind_of(Kintone::Command::BulkRequest) }
+  end
 end

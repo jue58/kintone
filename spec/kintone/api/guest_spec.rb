@@ -176,4 +176,10 @@ describe Kintone::Api::Guest do
 
     it { is_expected.to be_a_kind_of(Kintone::Command::Apps) }
   end
+
+  describe '#bulk' do
+    subject { target.bulk }
+
+    it { is_expected.to be_a_kind_of(Kintone::Command::BulkRequest) }
+  end
 end

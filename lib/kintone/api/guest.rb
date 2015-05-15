@@ -69,6 +69,10 @@ class Kintone::Api
       Kintone::Command::Apps.new(self)
     end
 
+    def bulk
+      Kintone::Command::BulkRequest.new(self)
+    end
+
     def_delegators :@api, :get, :post, :put, :delete
   end
 end
