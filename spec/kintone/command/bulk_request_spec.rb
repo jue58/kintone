@@ -13,7 +13,7 @@ describe Kintone::Command::BulkRequest do
         'https://example.cybozu.com/k/v1/bulkRequest.json'
       )
         .with(body: { requests: requests }.to_json)
-        .to_return(body: { 'results' => results }, status: 200)
+        .to_return(body: { 'results' => results }.to_json, status: 200)
     end
 
     subject { target.request(requests) }
