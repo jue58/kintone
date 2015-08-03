@@ -28,6 +28,7 @@ api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
 - [Record register](#record_register)
 - [Record update](#record_update)
 - [Record delete](#record_delete)
+- [Bulk request](#bulk_request)
 - [Format retrieval](#format_retrieval)
 - [Permissions](#permissions)
 - [Space management](#space_management)
@@ -189,6 +190,13 @@ api.records.update(app, records) # => {}
 ```ruby
 app = 8; ids = [100, 80]
 api.records.delete(app, ids) # => {}
+```
+
+### <a name="bulk_request"> Bulk request
+
+```ruby
+requests = {"requests" => [{"method" => "POST", ...}, {"method" => "PUT", ...}]}
+api.bulk.request(requests) # => {"results" => [...]}
 ```
 
 ### <a name="format_retrieval"> Format retrieval

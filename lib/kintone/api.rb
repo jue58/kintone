@@ -17,6 +17,7 @@ require 'kintone/command/guests'
 require 'kintone/command/app'
 require 'kintone/command/apps'
 require 'kintone/command/apis'
+require 'kintone/command/bulk_request'
 require 'kintone/api/guest'
 require 'kintone/query'
 
@@ -141,5 +142,9 @@ class Kintone::Api
 
   def apis
     Kintone::Command::Apis.new(self)
+  end
+
+  def bulk
+    Kintone::Command::BulkRequest.new(self)
   end
 end
