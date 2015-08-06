@@ -61,6 +61,16 @@ query =
     limit(10)
     offset(20)
   end
+# or
+query =
+  Kintone::Query.new do
+    f(:updated_time) > "2012-02-03T09:00:00+0900"
+    and!
+    f(:updated_time) < "2012-02-03T10:00:00+0900"
+    order_by(:record_id)
+    limit(10)
+    offset(20)
+  end
 query.to_s # => "updated_time > \"2012-02-03T09:00:00+0900\" and updated_time < \"2012-02-03T10:00:00+0900\" order by record_id asc limit 10 offset 20"
 api.records.get(app, query, fields)
 

@@ -5,7 +5,7 @@ describe Kintone::Query do
   describe '#to_s' do
     subject { target.to_s }
 
-    context '==' do
+    context '==', 'with field' do
       where(:target, :result) do
         [
           [Kintone::Query.new { field(:text) == '"Hello, world."' }, 'text = "Hello, world."'],
@@ -24,7 +24,26 @@ describe Kintone::Query do
       end
     end
 
-    context '!=' do
+    context '==', 'with f' do
+      where(:target, :result) do
+        [
+          [Kintone::Query.new { f(:text) == '"Hello, world."' }, 'text = "Hello, world."'],
+          [Kintone::Query.new { f(:text) == 'Hello, world.' }, 'text = "Hello, world."'],
+          [Kintone::Query.new { f('作成日時') == now }, '作成日時 = NOW()'],
+          [Kintone::Query.new { f('作成日時') == today }, '作成日時 = TODAY()'],
+          [Kintone::Query.new { f('作成日時') == this_month }, '作成日時 = THIS_MONTH()'],
+          [Kintone::Query.new { f('作成日時') == last_month }, '作成日時 = LAST_MONTH()'],
+          [Kintone::Query.new { f('作成日時') == this_year }, '作成日時 = THIS_YEAR()'],
+          [Kintone::Query.new { f(:number) == 100 }, 'number = 100']
+        ]
+      end
+
+      with_them do
+        it { expect(subject).to eq result }
+      end
+    end
+
+    context '!=', 'with field' do
       where(:target, :result) do
         [
           [Kintone::Query.new { field(:text) != '"Hello, world."' }, 'text != "Hello, world."'],
@@ -43,7 +62,26 @@ describe Kintone::Query do
       end
     end
 
-    context '>' do
+    context '!=', 'with f' do
+      where(:target, :result) do
+        [
+          [Kintone::Query.new { f(:text) != '"Hello, world."' }, 'text != "Hello, world."'],
+          [Kintone::Query.new { f(:text) != 'Hello, world.' }, 'text != "Hello, world."'],
+          [Kintone::Query.new { f('作成日時') != now }, '作成日時 != NOW()'],
+          [Kintone::Query.new { f('作成日時') != today }, '作成日時 != TODAY()'],
+          [Kintone::Query.new { f('作成日時') != this_month }, '作成日時 != THIS_MONTH()'],
+          [Kintone::Query.new { f('作成日時') != last_month }, '作成日時 != LAST_MONTH()'],
+          [Kintone::Query.new { f('作成日時') != this_year }, '作成日時 != THIS_YEAR()'],
+          [Kintone::Query.new { f(:number) != 100 }, 'number != 100']
+        ]
+      end
+
+      with_them do
+        it { expect(subject).to eq result }
+      end
+    end
+
+    context '>', 'with field' do
       where(:target, :result) do
         [
           [Kintone::Query.new { field(:text) > '"Hello, world."' }, 'text > "Hello, world."'],
@@ -62,7 +100,26 @@ describe Kintone::Query do
       end
     end
 
-    context '<' do
+    context '>', 'with f' do
+      where(:target, :result) do
+        [
+          [Kintone::Query.new { f(:text) > '"Hello, world."' }, 'text > "Hello, world."'],
+          [Kintone::Query.new { f(:text) > 'Hello, world.' }, 'text > "Hello, world."'],
+          [Kintone::Query.new { f('作成日時') > now }, '作成日時 > NOW()'],
+          [Kintone::Query.new { f('作成日時') > today }, '作成日時 > TODAY()'],
+          [Kintone::Query.new { f('作成日時') > this_month }, '作成日時 > THIS_MONTH()'],
+          [Kintone::Query.new { f('作成日時') > last_month }, '作成日時 > LAST_MONTH()'],
+          [Kintone::Query.new { f('作成日時') > this_year }, '作成日時 > THIS_YEAR()'],
+          [Kintone::Query.new { f(:number) > 100 }, 'number > 100']
+        ]
+      end
+
+      with_them do
+        it { expect(subject).to eq result }
+      end
+    end
+
+    context '<', 'with field' do
       where(:target, :result) do
         [
           [Kintone::Query.new { field(:text) < '"Hello, world."' }, 'text < "Hello, world."'],
@@ -81,7 +138,26 @@ describe Kintone::Query do
       end
     end
 
-    context '>=' do
+    context '<', 'with f' do
+      where(:target, :result) do
+        [
+          [Kintone::Query.new { f(:text) < '"Hello, world."' }, 'text < "Hello, world."'],
+          [Kintone::Query.new { f(:text) < 'Hello, world.' }, 'text < "Hello, world."'],
+          [Kintone::Query.new { f('作成日時') < now }, '作成日時 < NOW()'],
+          [Kintone::Query.new { f('作成日時') < today }, '作成日時 < TODAY()'],
+          [Kintone::Query.new { f('作成日時') < this_month }, '作成日時 < THIS_MONTH()'],
+          [Kintone::Query.new { f('作成日時') < last_month }, '作成日時 < LAST_MONTH()'],
+          [Kintone::Query.new { f('作成日時') < this_year }, '作成日時 < THIS_YEAR()'],
+          [Kintone::Query.new { f(:number) < 100 }, 'number < 100']
+        ]
+      end
+
+      with_them do
+        it { expect(subject).to eq result }
+      end
+    end
+
+    context '>=', 'with field' do
       where(:target, :result) do
         [
           [Kintone::Query.new { field(:text) >= '"Hello, world."' }, 'text >= "Hello, world."'],
@@ -100,7 +176,26 @@ describe Kintone::Query do
       end
     end
 
-    context '<=' do
+    context '>=', 'with f' do
+      where(:target, :result) do
+        [
+          [Kintone::Query.new { f(:text) >= '"Hello, world."' }, 'text >= "Hello, world."'],
+          [Kintone::Query.new { f(:text) >= 'Hello, world.' }, 'text >= "Hello, world."'],
+          [Kintone::Query.new { f('作成日時') >= now }, '作成日時 >= NOW()'],
+          [Kintone::Query.new { f('作成日時') >= today }, '作成日時 >= TODAY()'],
+          [Kintone::Query.new { f('作成日時') >= this_month }, '作成日時 >= THIS_MONTH()'],
+          [Kintone::Query.new { f('作成日時') >= last_month }, '作成日時 >= LAST_MONTH()'],
+          [Kintone::Query.new { f('作成日時') >= this_year }, '作成日時 >= THIS_YEAR()'],
+          [Kintone::Query.new { f(:number) >= 100 }, 'number >= 100']
+        ]
+      end
+
+      with_them do
+        it { expect(subject).to eq result }
+      end
+    end
+
+    context '<=', 'with field' do
       where(:target, :result) do
         [
           [Kintone::Query.new { field(:text) <= '"Hello, world."' }, 'text <= "Hello, world."'],
@@ -119,7 +214,26 @@ describe Kintone::Query do
       end
     end
 
-    context 'in' do
+    context '<=', 'with f' do
+      where(:target, :result) do
+        [
+          [Kintone::Query.new { f(:text) <= '"Hello, world."' }, 'text <= "Hello, world."'],
+          [Kintone::Query.new { f(:text) <= 'Hello, world.' }, 'text <= "Hello, world."'],
+          [Kintone::Query.new { f('作成日時') <= now }, '作成日時 <= NOW()'],
+          [Kintone::Query.new { f('作成日時') <= today }, '作成日時 <= TODAY()'],
+          [Kintone::Query.new { f('作成日時') <= this_month }, '作成日時 <= THIS_MONTH()'],
+          [Kintone::Query.new { f('作成日時') <= last_month }, '作成日時 <= LAST_MONTH()'],
+          [Kintone::Query.new { f('作成日時') <= this_year }, '作成日時 <= THIS_YEAR()'],
+          [Kintone::Query.new { f(:number) <= 100 }, 'number <= 100']
+        ]
+      end
+
+      with_them do
+        it { expect(subject).to eq result }
+      end
+    end
+
+    context 'in', 'with field' do
       where(:target, :result) do
         [
           [Kintone::Query.new { field(:dropdown).in(['"A"', '"B"']) }, 'dropdown in ("A", "B")'],
@@ -135,7 +249,23 @@ describe Kintone::Query do
       end
     end
 
-    context 'not in' do
+    context 'in', 'with f' do
+      where(:target, :result) do
+        [
+          [Kintone::Query.new { f(:dropdown).in(['"A"', '"B"']) }, 'dropdown in ("A", "B")'],
+          [Kintone::Query.new { f(:dropdown).in(%w(A B)) }, 'dropdown in ("A", "B")'],
+          [Kintone::Query.new { f(:dropdown).in([:A, :B]) }, 'dropdown in ("A", "B")'],
+          [Kintone::Query.new { f(:dropdown).in([100, 200]) }, 'dropdown in (100, 200)'],
+          [Kintone::Query.new { f('作成者').in([login_user]) }, '作成者 in (LOGINUSER())']
+        ]
+      end
+
+      with_them do
+        it { expect(subject).to eq result }
+      end
+    end
+
+    context 'not in', 'with field' do
       where(:target, :result) do
         [
           [
@@ -166,7 +296,38 @@ describe Kintone::Query do
       end
     end
 
-    context 'like' do
+    context 'not in', 'with field' do
+      where(:target, :result) do
+        [
+          [
+            Kintone::Query.new { f(:dropdown).not_in(['"A"', '"B"']) },
+            'dropdown not in ("A", "B")'
+          ],
+          [
+            Kintone::Query.new { f(:dropdown).not_in(%w(A B)) },
+            'dropdown not in ("A", "B")'
+          ],
+          [
+            Kintone::Query.new { f(:dropdown).not_in([:A, :B]) },
+            'dropdown not in ("A", "B")'
+          ],
+          [
+            Kintone::Query.new { f(:dropdown).not_in([100, 200]) },
+            'dropdown not in (100, 200)'
+          ],
+          [
+            Kintone::Query.new { f('作成者').not_in([login_user]) },
+            '作成者 not in (LOGINUSER())'
+          ]
+        ]
+      end
+
+      with_them do
+        it { expect(subject).to eq result }
+      end
+    end
+
+    context 'like', 'with field' do
       where(:target, :result) do
         [
           [Kintone::Query.new { field(:text).like('Hello') }, 'text like "Hello"'],
@@ -180,12 +341,40 @@ describe Kintone::Query do
       end
     end
 
-    context 'not like' do
+    context 'like', 'with f' do
+      where(:target, :result) do
+        [
+          [Kintone::Query.new { f(:text).like('Hello') }, 'text like "Hello"'],
+          [Kintone::Query.new { f(:text).like('"Hello"') }, 'text like "Hello"'],
+          [Kintone::Query.new { f(:text).like(:Hello) }, 'text like "Hello"']
+        ]
+      end
+
+      with_them do
+        it { expect(subject).to eq result }
+      end
+    end
+
+    context 'not like', 'with field' do
       where(:target, :result) do
         [
           [Kintone::Query.new { field(:text).not_like('Hello') }, 'text not like "Hello"'],
           [Kintone::Query.new { field(:text).not_like('"Hello"') }, 'text not like "Hello"'],
           [Kintone::Query.new { field(:text).not_like(:Hello) }, 'text not like "Hello"']
+        ]
+      end
+
+      with_them do
+        it { expect(subject).to eq result }
+      end
+    end
+
+    context 'not like', 'with f' do
+      where(:target, :result) do
+        [
+          [Kintone::Query.new { f(:text).not_like('Hello') }, 'text not like "Hello"'],
+          [Kintone::Query.new { f(:text).not_like('"Hello"') }, 'text not like "Hello"'],
+          [Kintone::Query.new { f(:text).not_like(:Hello) }, 'text not like "Hello"']
         ]
       end
 
