@@ -68,6 +68,8 @@ class Kintone::Query
     to_s
   end
 
+  alias_method :f, :field
+
   private
 
   def function_string(function)
