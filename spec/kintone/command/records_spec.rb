@@ -92,108 +92,181 @@ describe Kintone::Command::Records do
   end
 
   describe '#register' do
+    before(:each) do
+      stub_request(
+        :post,
+        'https://example.cybozu.com/k/v1/records.json'
+      )
+        .with(body: request_body.to_json)
+        .to_return(body: response_body.to_json, status: 200)
+    end
+
     subject { target.register(app, records) }
 
-    context '' do
-      before(:each) do
-        stub_request(
-          :post,
-          'https://example.cybozu.com/k/v1/records.json'
-        )
-          .with(body: { 'app' => 7, 'records' => hash_data }.to_json)
-          .to_return(body: "{\"ids\":[\"100\", \"101\"]}", status: 200)
-      end
+    let(:app) { 7 }
+    let(:request_body) do
+      {
+        'app' => 7,
+        'records' => [
+          { 'rich_editor' => { 'value' => 'testtest' } },
+          { 'user_select' => { 'value' => [{ 'code' => 'suzuki' }] } }
+        ]
+      }
+    end
+    let(:response_body) { { 'ids' => ['100', '101'], 'revisions' => ['1', '1'] } }
 
-      let(:app) { 7 }
-
-      def hash_data
+    context 'use hash' do
+      let(:records) do
         [
-          {
-            'rich_editor' => { 'value' => 'testtest' }
-          },
-          {
-            'user_select' => { 'value' => [{ 'code' => 'suzuki' }] }
-          }
+          { 'rich_editor' => { 'value' => 'testtest' } },
+          { 'user_select' => { 'value' => [{ 'code' => 'suzuki' }] } }
         ]
       end
 
-      def record_data
+      it { expect(subject).to eq response_body }
+    end
+
+    context 'use record' do
+      let(:records) do
         [
           Kintone::Type::Record.new(rich_editor: 'testtest'),
           Kintone::Type::Record.new(user_select: [{ code: 'suzuki' }])
         ]
       end
 
-      where(:records, :result) do
-        [
-          [hash_data, { 'ids' => %w(100 101) }],
-          [record_data, { 'ids' => %w(100 101) }]
-        ]
-      end
-
-      with_them do
-        it { expect(subject).to eq result }
-      end
+      it { expect(subject).to eq response_body }
     end
   end
 
   describe '#update' do
+    before(:each) do
+      stub_request(
+        :put,
+        'https://example.cybozu.com/k/v1/records.json'
+      )
+        .with(body: request_body.to_json)
+        .to_return(body: response_body.to_json, status: 200)
+    end
+
     subject { target.update(app, records) }
 
-    context '' do
-      before(:each) do
-        stub_request(
-          :put,
-          'https://example.cybozu.com/k/v1/records.json'
-        )
-          .with(body: { 'app' => 4, 'records' => hash_data }.to_json)
-          .to_return(body: '{}', status: 200)
+    let(:app) { 4 }
+    let(:response_body) do
+      { 'records' => [{ 'id' => '1', 'revision' => '2' }, { 'id' => '2', 'revision' => '2' }] }
+    end
+
+    context 'without revision' do
+      let(:request_body) do
+        {
+          'app' => 4,
+          'records' => [
+            { 'id' => 1, 'record' => { 'string_1' => { 'value' => 'abcdef' } } },
+            { 'id' => 2, 'record' => { 'string_multi' => { 'value' => 'opqrstu' } } }
+          ]
+        }
       end
 
-      let(:app) { 4 }
+      context 'use hash' do
+        let(:records) do
+          [
+            { 'id' => 1, 'record' => { 'string_1' => { 'value' => 'abcdef' } } },
+            { 'id' => 2, 'record' => { 'string_multi' => { 'value' => 'opqrstu' } } }
+          ]
+        end
 
-      def hash_data
-        [
-          { 'id' => 1, 'record' => { 'string_1' => { 'value' => 'abcdef' } } },
-          { 'id' => 2, 'record' => { 'string_multi' => { 'value' => 'opqrstu' } } }
-        ]
+        it { expect(subject).to eq response_body }
       end
 
-      def record_data
-        [
-          { id: 1, record: Kintone::Type::Record.new(string_1: 'abcdef') },
-          { id: 2, record: Kintone::Type::Record.new(string_multi: 'opqrstu') }
-        ]
+      context 'use record' do
+        let(:records) do
+          [
+            { id: 1, record: Kintone::Type::Record.new(string_1: 'abcdef') },
+            { id: 2, record: Kintone::Type::Record.new(string_multi: 'opqrstu') }
+          ]
+        end
+
+        it { expect(subject).to eq response_body }
+      end
+    end
+
+    context 'with revision' do
+      let(:request_body) do
+        {
+          'app' => 4,
+          'records' => [
+            {
+              'id' => 1,
+              'revision' => 1,
+              'record' => { 'string_1' => { 'value' => 'abcdef' } }
+            },
+            {
+              'id' => 2,
+              'revision' => 1,
+              'record' => { 'string_multi' => { 'value' => 'opqrstu' } }
+            }
+          ]
+        }
       end
 
-      where(:records, :result) do
-        [
-          [hash_data, {}],
-          [record_data, {}]
-        ]
+      context 'use hash' do
+        let(:records) do
+          [
+            {
+              'id' => 1,
+              'revision' => 1,
+              'record' => { 'string_1' => { 'value' => 'abcdef' } }
+            },
+            {
+              'id' => 2,
+              'revision' => 1,
+              'record' => { 'string_multi' => { 'value' => 'opqrstu' } }
+            }
+          ]
+        end
+
+        it { expect(subject).to eq response_body }
       end
 
-      with_them do
-        it { expect(subject).to eq result }
+      context 'use record' do
+        let(:records) do
+          [
+            { id: 1, revision: 1, record: Kintone::Type::Record.new(string_1: 'abcdef') },
+            { id: 2, revision: 1, record: Kintone::Type::Record.new(string_multi: 'opqrstu') }
+          ]
+        end
+
+        it { expect(subject).to eq response_body }
       end
     end
   end
 
   describe '#delete' do
-    subject { target.delete(app, ids) }
+    before(:each) do
+      stub_request(
+        :delete,
+        'https://example.cybozu.com/k/v1/records.json'
+      )
+        .with(body: request_body.to_json)
+        .to_return(body: '{}', status: 200)
+    end
 
-    context '' do
-      before(:each) do
-        stub_request(
-          :delete,
-          'https://example.cybozu.com/k/v1/records.json'
-        )
-          .with(body: { app: app, ids: ids }.to_json)
-          .to_return(body: '{}', status: 200)
-      end
+    context 'without revisions' do
+      subject { target.delete(app, ids) }
 
       let(:app) { 1 }
       let(:ids) { [100, 80] }
+      let(:request_body) { { app: app, ids: ids } }
+
+      it { expect(subject).to eq({}) }
+    end
+
+    context 'with revisions' do
+      subject { target.delete(app, ids, revisions: revisions) }
+
+      let(:app) { 1 }
+      let(:ids) { [100, 80] }
+      let(:revisions) { [1, 4] }
+      let(:request_body) { { app: app, ids: ids, revisions: revisions } }
 
       it { expect(subject).to eq({}) }
     end

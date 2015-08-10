@@ -36,39 +36,47 @@ describe Kintone::Command::Record do
         :post,
         'https://www.example.com/k/v1/record.json'
       )
-        .with(body: { 'app' => 7, 'record' => hash_record }.to_json)
-        .to_return(body: "{\"id\":\"100\"}", status: 200)
+        .with(body: request_body.to_json)
+        .to_return(body: response_body.to_json, status: 200)
     end
 
     subject { target.register(app, record) }
 
     let(:app) { 7 }
-
-    def hash_record
+    let(:request_body) do
       {
-        'number' => { 'value' => '123456' },
-        'rich_editor' => { 'value' => 'testtest' },
-        'user_select' => { 'value' => [{ 'code' => 'sato' }] }
+        'app' => 7,
+        'record' => {
+          'number' => { 'value' => '123456' },
+          'rich_editor' => { 'value' => 'testtest' },
+          'user_select' => { 'value' => [{ 'code' => 'sato' }] }
+        }
       }
     end
+    let(:response_body) { { 'id' => '100', 'revision' => '1' } }
 
-    def record_record
-      Kintone::Type::Record.new(
-        number: '123456',
-        rich_editor: 'testtest',
-        user_select: [{ 'code' => 'sato' }]
-      )
+    context 'use hash' do
+      let(:record) do
+        {
+          'number' => { 'value' => '123456' },
+          'rich_editor' => { 'value' => 'testtest' },
+          'user_select' => { 'value' => [{ 'code' => 'sato' }] }
+        }
+      end
+
+      it { expect(subject).to eq response_body }
     end
 
-    where(:record, :result) do
-      [
-        [hash_record, { 'id' => '100' }],
-        [record_record, { 'id' => '100' }]
-      ]
-    end
+    context 'use record' do
+      let(:record) do
+        Kintone::Type::Record.new(
+          number: '123456',
+          rich_editor: 'testtest',
+          user_select: [{ 'code' => 'sato' }]
+        )
+      end
 
-    with_them do
-      it { expect(subject).to eq result }
+      it { expect(subject).to eq response_body }
     end
   end
 
@@ -78,34 +86,51 @@ describe Kintone::Command::Record do
         :put,
         'https://www.example.com/k/v1/record.json'
       )
-        .with(body: { 'app' => 4, 'id' => 1, 'record' => hash_record }.to_json)
-        .to_return(body: '{}', status: 200)
+        .with(body: request_body.to_json)
+        .to_return(body: response_body.to_json, status: 200)
     end
 
     subject { target.update(app, id, record) }
 
     let(:app) { 4 }
     let(:id) { 1 }
+    let(:hash_record) { { 'string_multi' => { 'value' => 'character string is changed' } } }
+    let(:record_record) { Kintone::Type::Record.new(string_multi: 'character string is changed') }
+    let(:response_body) { { revision: '2' } }
 
-    def hash_record
-      {
-        'string_multi' => { 'value' => 'character string is changed' }
-      }
+    context 'without revision' do
+      let(:request_body) { { 'app' => 4, 'id' => 1, 'record' => hash_record } }
+
+      context 'use hash' do
+        let(:record) { hash_record }
+
+        it { expect(subject).to match 'revision' => '2' }
+      end
+
+      context 'use record' do
+        let(:record) { record_record }
+
+        it { expect(subject).to match 'revision' => '2' }
+      end
     end
 
-    def record_record
-      Kintone::Type::Record.new(string_multi: 'character string is changed')
-    end
+    context 'with revision' do
+      subject { target.update(app, id, record, revision: revision) }
 
-    where(:record, :result) do
-      [
-        [hash_record, {}],
-        [record_record, {}]
-      ]
-    end
+      let(:revision) { 1 }
+      let(:request_body) { { 'app' => 4, 'id' => 1, 'record' => hash_record, 'revision' => 1 } }
 
-    with_them do
-      it { expect(subject).to match result }
+      context 'use hash' do
+        let(:record) { hash_record }
+
+        it { expect(subject).to match 'revision' => '2' }
+      end
+
+      context 'use record' do
+        let(:record) { record_record }
+
+        it { expect(subject).to match 'revision' => '2' }
+      end
     end
   end
 end
