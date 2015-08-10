@@ -17,7 +17,9 @@ class Kintone::Command::Record < Kintone::Command
     register(app, record)
   end
 
-  def update(app, id, record)
-    @api.put(@url, app: app, id: id, record: record.to_kintone)
+  def update(app, id, record, revision: nil)
+    body = { app: app, id: id, record: record.to_kintone }
+    body[:revision] = revision if revision
+    @api.put(@url, body)
   end
 end

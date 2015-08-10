@@ -134,12 +134,12 @@ offset | offset(30)
 # Use Hash
 app = 7
 record = {"number" => {"value" => "123456"}}
-api.record.register(app, record) # => {"id" => "100"}
+api.record.register(app, record) # => {"id" => "100", "revision" => "1"}
 
 # Use Kintone::Type::Record
 app = 7
 record = Kintone::Type::Record.new(number: "123456")
-api.record.register(app, record) # => {"id" => "100"}
+api.record.register(app, record) # => {"id" => "100", "revision" => "1"}
 
 # Records register(batch)
 # Use Hash
@@ -148,7 +148,7 @@ records = [
   {"number" => {"value" => "123456"}},
   {"number" => {"value" => "7890"}}
 ]
-api.records.register(app, records) # => {"ids" => ["100", "101"]}
+api.records.register(app, records) # => {"ids" => ["100", "101"], "revisions" => ["1", "1"]}
 
 # Use Kintone::Type::Record
 app = 7
@@ -156,7 +156,7 @@ records = [
   Kintone::Type::Record.new(number: "123456"),
   Kintone::Type::Record.new(number: "7890")
 ]
-api.records.register(app, records) # => {"ids" => ["100", "101"]}
+api.records.register(app, records) # => {"ids" => ["100", "101"], "revisions" => ["1", "1"]}
 
 # Deprecated
 api.record.create(app, record)
@@ -170,12 +170,15 @@ api.records.create(app, records)
 # Use Hash
 app = 4; id = 1
 record = {"string_multi" => {"value" => "changed!"}}
-api.record.update(app, id, record) # => {}
+api.record.update(app, id, record) # => {"revision" => "2"}
 
 # Use Kintone::Type::Record
 app = 4; id = 1
 record = Kintone::Type::Record.new({string_multi: "changed!"})
-api.record.update(app, id, record) # => {}
+api.record.update(app, id, record) # => {"revision" => "2"}
+
+# With revision
+api.record.update(app, id, record, revision: 1)
 
 # Records update(batch)
 # Use Hash
@@ -184,7 +187,7 @@ records = [
   {"id" => 1, "record" => {"string_multi" => {"value" => "abcdef"}}},
   {"id" => 2, "record" => {"string_multi" => {"value" => "opqrstu"}}}
 ]
-api.records.update(app, records) # => {}
+api.records.update(app, records) # => {"records" => [{"id" => "1", "revision" => "2"}, {"id" => "2", "revision" => "2"}]}
 
 # Use Kintone::Type::Record
 app = 4
@@ -192,7 +195,14 @@ records = [
   {id: 1, record: Kintone::Type::Record.new(string_multi: "abcdef")},
   {id: 2, record: Kintone::Type::Record.new(string_multi: "opqrstu")}
 ]
-api.records.update(app, records) # => {}
+api.records.update(app, records) # => {"records" => [{"id" => "1", "revision" => "2"}, {"id" => "2", "revision" => "2"}]}
+
+# with revision
+records = [
+  {id: 1, revision: 1, record: Kintone::Type::Record.new(string_multi: "abcdef")},
+  {id: 2, revision: 1, record: Kintone::Type::Record.new(string_multi: "opqrstu")}
+]
+api.records.update(app, records)
 ```
 
 ### <a name="record_delete"> Record delete
@@ -200,6 +210,10 @@ api.records.update(app, records) # => {}
 ```ruby
 app = 8; ids = [100, 80]
 api.records.delete(app, ids) # => {}
+
+# With revision
+revisions = [1, 1]
+api.records.delete(app, ids, revisions: revisions)
 ```
 
 ### <a name="bulk_request"> Bulk request

@@ -23,8 +23,9 @@ class Kintone::Command::Records < Kintone::Command
     @api.put(@url, app: app, records: records.to_kintone)
   end
 
-  def delete(app, ids)
+  def delete(app, ids, revisions: nil)
     params = { app: app, ids: ids }
+    params[:revisions] = revisions if revisions
     @api.delete(@url, params)
   end
 end
