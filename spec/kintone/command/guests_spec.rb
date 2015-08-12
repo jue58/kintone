@@ -6,7 +6,7 @@ describe Kintone::Command::Guests do
   let(:target) { Kintone::Command::Guests.new(api) }
   let(:api) { Kintone::Api.new('example.cybozu.com', 'Administrator', 'cybozu') }
 
-  describe '#create' do
+  describe '#register' do
     before(:each) do
       stub_request(
         :post,
@@ -16,7 +16,7 @@ describe Kintone::Command::Guests do
         .to_return(body: '{}', status: 200)
     end
 
-    subject { target.create(guests) }
+    subject { target.register(guests) }
 
     let(:guests) do
       [

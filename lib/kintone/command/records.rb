@@ -15,10 +15,6 @@ class Kintone::Command::Records < Kintone::Command
     @api.post(@url, app: app, records: records.to_kintone)
   end
 
-  def create(app, records)
-    register(app, records)
-  end
-
   def update(app, records)
     @api.put(@url, app: app, records: records.to_kintone)
   end
@@ -28,4 +24,6 @@ class Kintone::Command::Records < Kintone::Command
     params[:revisions] = revisions if revisions
     @api.delete(@url, params)
   end
+
+  alias_method :create, :register
 end

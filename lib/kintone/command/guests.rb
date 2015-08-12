@@ -5,11 +5,13 @@ class Kintone::Command::Guests < Kintone::Command
     'guests'
   end
 
-  def create(guests)
+  def register(guests)
     @api.post(@url, guests: guests)
   end
 
   def delete(guests)
     @api.delete(@url, guests: guests)
   end
+
+  alias_method :create, :register
 end
