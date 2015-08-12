@@ -157,10 +157,6 @@ records = [
   Kintone::Type::Record.new(number: "7890")
 ]
 api.records.register(app, records) # => {"ids" => ["100", "101"], "revisions" => ["1", "1"]}
-
-# Deprecated
-api.record.create(app, record)
-api.records.create(app, records)
 ```
 
 ### <a name="record_update"> Record update
@@ -291,7 +287,7 @@ api.space.delete(id) # => {}
 ```ruby
 # Add guest
 guests = [{code: "hoge@example.com", password: "p@ssword", timezone: "Asia/Tokyo", name: "Tokyo, Saburo", ...}, ...]
-api.guests.create(guests) # => {}
+api.guests.register(guests) # => {}
 
 # delete guest
 guests = ["hoge@example.com", "fuga@example.com"]
