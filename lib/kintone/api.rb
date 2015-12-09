@@ -35,9 +35,10 @@ class Kintone::Api
     headers = { 'X-Cybozu-Authorization' => token }
     @connection =
       Faraday.new(url: url, headers: headers) do |builder|
-        builder.adapter :net_http
         builder.request :url_encoded
+        builder.request :multipart
         builder.response :json
+        builder.adapter :net_http
       end
   end
 
@@ -86,6 +87,21 @@ class Kintone::Api
         request.body = body.to_json
       end
     response.body
+  end
+
+  def file_post(url, file)
+    response =
+      @connection.post do |request|
+        request.url url
+        request.headers['Content-Type'] = 'multipart/form-data'
+        request.body = { file: Faraday::UploadIO.new(
+          file.path,
+          file.content_type,
+          file.original_filename,
+          "Content-Disposition" => "form-data") }
+      end
+
+    response.body['fileKey']
   end
 
   def method_missing(name, *args)
