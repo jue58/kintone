@@ -26,7 +26,8 @@ class Kintone::Api
     :apps,
     :apis,
     :bulk_request,
-    :bulk
+    :bulk,
+    :file
   ].freeze
 
   def initialize(domain, user, password)

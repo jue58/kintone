@@ -22,7 +22,8 @@ class Kintone::Api
       :app,
       :apps,
       :bulk_request,
-      :bulk
+      :bulk,
+      :file
     ].freeze
 
     def_delegators :@api, :get, :post, :put, :delete, :file_post
