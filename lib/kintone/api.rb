@@ -38,7 +38,7 @@ class Kintone::Api
       Faraday.new(url: url, headers: headers) do |builder|
         builder.request :url_encoded
         builder.request :multipart
-        builder.response :json
+        builder.response :json, content_type: /\bjson$/
         builder.adapter :net_http
       end
   end
