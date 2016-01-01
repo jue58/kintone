@@ -69,9 +69,9 @@ describe Kintone::Command::Records do
       before(:each) do
         stub_request(
           :get,
-          'https://example.cybozu.com/k/v1/records.json?'
+          'https://example.cybozu.com/k/v1/records.json'
         )
-          .with(query: { app: 8, query: nil })
+          .with(query: { app: 8, query: '' })
           .to_return(body: response_data.to_json, status: 200)
       end
 
