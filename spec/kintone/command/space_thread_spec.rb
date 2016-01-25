@@ -13,7 +13,7 @@ describe Kintone::Command::SpaceThread do
         'https://example.cybozu.com/k/v1/space/thread.json'
       )
         .with(body: request_body)
-        .to_return(body: '{}', status: 200)
+        .to_return(body: '{}', status: 200, headers: {'Content-type' => 'application/json'})
     end
 
     subject { target.update(id, name: name, body: body) }

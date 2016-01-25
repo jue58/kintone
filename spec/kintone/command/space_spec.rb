@@ -16,7 +16,7 @@ describe Kintone::Command::Space do
           'https://example.cybozu.com/k/v1/space.json'
         )
           .with(query: { id: 1 })
-          .to_return(body: result.to_json, status: 200)
+          .to_return(body: result.to_json, status: 200, headers: {'Content-type' => 'application/json'})
       end
 
       let(:id) { 1 }
@@ -42,7 +42,7 @@ describe Kintone::Command::Space do
           'https://example.cybozu.com/k/v1/space.json'
         )
           .with(body: { id: 1 }.to_json)
-          .to_return(body: '{}', status: 200)
+          .to_return(body: '{}', status: 200, headers: {'Content-type' => 'application/json'})
       end
 
       let(:id) { 1 }

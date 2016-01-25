@@ -25,7 +25,7 @@ describe Kintone::Api::Guest do
           headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' },
           query: params
         )
-        .to_return(body: "{\"abc\":\"def\"}", status: 200)
+        .to_return(body: "{\"abc\":\"def\"}", status: 200, headers: {'Content-type' => 'application/json'})
     end
 
     subject { target.get(path, params) }
@@ -46,7 +46,7 @@ describe Kintone::Api::Guest do
           headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' },
           body: "{\"p1\":\"abc\",\"p2\":\"def\"}"
         )
-        .to_return(body: "{\"abc\":\"def\"}", status: 200)
+        .to_return(body: "{\"abc\":\"def\"}", status: 200, headers: {'Content-type' => 'application/json'})
     end
 
     subject { target.post(path, body) }
@@ -67,7 +67,7 @@ describe Kintone::Api::Guest do
           headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' },
           body: "{\"p1\":\"abc\",\"p2\":\"def\"}"
         )
-        .to_return(body: "{\"abc\":\"def\"}", status: 200)
+        .to_return(body: "{\"abc\":\"def\"}", status: 200, headers: {'Content-type' => 'application/json'})
     end
 
     subject { target.put(path, body) }
@@ -88,7 +88,7 @@ describe Kintone::Api::Guest do
           body: { 'p1' => 'abc', 'p2' => 'def' }.to_json,
           headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }
         )
-        .to_return(body: "{\"abc\":\"def\"}", status: 200)
+        .to_return(body: "{\"abc\":\"def\"}", status: 200, headers: {'Content-type' => 'application/json'})
     end
 
     subject { target.delete(path, params) }

@@ -11,7 +11,7 @@ describe Kintone::Command::Apis do
         :get,
         'https://example.cybozu.com/k/v1/apis.json'
       )
-        .to_return(body: response_data.to_json, status: 200)
+        .to_return(body: response_data.to_json, status: 200, headers: {'Content-type' => 'application/json'})
     end
 
     subject { target.get }
@@ -36,7 +36,7 @@ describe Kintone::Command::Apis do
         :get,
         'https://example.cybozu.com/k/v1/apis/records/get.json'
       )
-        .to_return(body: response_data.to_json, status: 200)
+        .to_return(body: response_data.to_json, status: 200, headers: {'Content-type' => 'application/json'})
     end
 
     subject { target.get_details_of(link) }
@@ -61,13 +61,13 @@ describe Kintone::Command::Apis do
         :get,
         'https://example.cybozu.com/k/v1/apis.json'
       )
-        .to_return(body: apis_response_data.to_json, status: 200)
+        .to_return(body: apis_response_data.to_json, status: 200, headers: {'Content-type' => 'application/json'})
 
       stub_request(
         :get,
         'https://example.cybozu.com/k/v1/apis/records/get.json'
       )
-        .to_return(body: api_response_data.to_json, status: 200)
+        .to_return(body: api_response_data.to_json, status: 200, headers: {'Content-type' => 'application/json'})
     end
 
     subject { target.get_details_of_key(key) }
