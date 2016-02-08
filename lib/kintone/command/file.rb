@@ -9,7 +9,7 @@ class Kintone::Command::File < Kintone::Command
     @api.get(@url, fileKey: file_key)
   end
 
-  def register(app, file)
-    @api.file_post(@url, file)
+  def register(path, content_type, original_filename)
+    @api.post_file(@url, path, content_type, original_filename)
   end
 end

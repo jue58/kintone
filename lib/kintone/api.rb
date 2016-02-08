@@ -90,18 +90,15 @@ class Kintone::Api
     response.body
   end
 
-  def file_post(url, file)
+  def post_file(url, path, content_type, original_filename)
     response =
       @connection.post do |request|
         request.url url
         request.headers['Content-Type'] = 'multipart/form-data'
         request.body = { file: Faraday::UploadIO.new(
-          file.path,
-          file.content_type,
-          file.original_filename,
-          "Content-Disposition" => "form-data") }
+          path, content_type, original_filename,
+          'Content-Disposition' => 'form-data') }
       end
-
     response.body['fileKey']
   end
 

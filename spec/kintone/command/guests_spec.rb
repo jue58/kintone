@@ -13,7 +13,8 @@ describe Kintone::Command::Guests do
         'https://example.cybozu.com/k/v1/guests.json'
       )
         .with(body: { guests: guests }.to_json)
-        .to_return(body: '{}', status: 200, headers: {'Content-type' => 'application/json'})
+        .to_return(body: '{}', status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.register(guests) }
@@ -47,7 +48,8 @@ describe Kintone::Command::Guests do
         'https://example.cybozu.com/k/v1/guests.json'
       )
         .with(body: { guests: guests }.to_json)
-        .to_return(body: '{}', status: 200, headers: {'Content-type' => 'application/json'})
+        .to_return(body: '{}', status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.delete(guests) }

@@ -13,7 +13,8 @@ describe Kintone::Command::Record do
         :get,
         'https://www.example.com/k/v1/record.json?app=8&id=100'
       )
-        .to_return(body: "{\"result\":\"ok\"}", status: 200, headers: {'Content-type' => 'application/json'})
+        .to_return(body: "{\"result\":\"ok\"}", status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.get(app, id) }
@@ -37,7 +38,8 @@ describe Kintone::Command::Record do
         'https://www.example.com/k/v1/record.json'
       )
         .with(body: request_body.to_json)
-        .to_return(body: response_body.to_json, status: 200, headers: {'Content-type' => 'application/json'})
+        .to_return(body: response_body.to_json, status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.register(app, record) }
@@ -87,7 +89,8 @@ describe Kintone::Command::Record do
         'https://www.example.com/k/v1/record.json'
       )
         .with(body: request_body.to_json)
-        .to_return(body: response_body.to_json, status: 200, headers: {'Content-type' => 'application/json'})
+        .to_return(body: response_body.to_json, status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.update(app, id, record) }
