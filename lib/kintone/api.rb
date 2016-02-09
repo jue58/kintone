@@ -31,15 +31,8 @@ class Kintone::Api
   ].freeze
 
   def initialize(domain, user, password = nil)
-    headers =
-      if password # パスワード認証
-        { 'X-Cybozu-Authorization' => Base64.encode64("#{user}:#{password}") }
-      else # APIトークン認証
-        { 'X-Cybozu-API-Token' => user }
-      end
-
     @connection =
-      Faraday.new(url: "https://#{domain}", headers: headers) do |builder|
+      Faraday.new(url: "https://#{domain}", headers: build_headers(user, password)) do |builder|
         builder.request :url_encoded
         builder.request :multipart
         builder.response :json, content_type: /\bjson$/
@@ -116,5 +109,15 @@ class Kintone::Api
 
   class CommandAccessor
     extend Kintone::Command::Accessor
+  end
+
+  private
+
+  def build_headers(user, password)
+    if password # パスワード認証
+      { 'X-Cybozu-Authorization' => Base64.encode64("#{user}:#{password}") }
+    else # APIトークン認証
+      { 'X-Cybozu-API-Token' => user }
+    end
   end
 end
