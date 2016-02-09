@@ -13,7 +13,8 @@ describe Kintone::Command::SpaceMembers do
         'https://example.cybozu.com/k/v1/space/members.json'
       )
         .with(query: { id: id })
-        .to_return(body: response_data.to_json, status: 200)
+        .to_return(body: response_data.to_json, status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.get(id) }
@@ -46,7 +47,8 @@ describe Kintone::Command::SpaceMembers do
         'https://example.cybozu.com/k/v1/space/members.json'
       )
         .with(body: request_data.to_json)
-        .to_return(body: '{}', status: 200)
+        .to_return(body: '{}', status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.update(id, members) }

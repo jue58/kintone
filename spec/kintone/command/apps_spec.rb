@@ -15,7 +15,8 @@ describe Kintone::Command::Apps do
           'https://example.cybozu.com/k/v1/apps.json'
         )
           .with(query: query)
-          .to_return(body: { apps: [] }.to_json, status: 200)
+          .to_return(body: { apps: [] }.to_json, status: 200,
+                     headers: { 'Content-type' => 'application/json' })
       end
 
       where(:params, :query) do

@@ -19,7 +19,8 @@ describe Kintone::Command::Records do
           :get,
           'https://example.cybozu.com/k/v1/records.json?app=8&query='
         )
-          .to_return(body: response_data.to_json, status: 200)
+          .to_return(body: response_data.to_json, status: 200,
+                     headers: { 'Content-type' => 'application/json' })
       end
 
       def response_data
@@ -35,7 +36,8 @@ describe Kintone::Command::Records do
           :get,
           'https://example.cybozu.com/k/v1/records.json?app=8&query=updated_time%20%3e%20%222012%2d02%2d03T09%3a00%3a00%2b0900%22%20and%20updated_time%20%3c%20%222012%2d02%2d03T10%3a00%3a00%2b0900%22'
         )
-          .to_return(body: response_data.to_json, status: 200)
+          .to_return(body: response_data.to_json, status: 200,
+                     headers: { 'Content-type' => 'application/json' })
       end
 
       let(:query) { "updated_time > \"2012-02-03T09:00:00+0900\" and updated_time < \"2012-02-03T10:00:00+0900\"" } # rubocop:disable Style/LineLength
@@ -53,7 +55,8 @@ describe Kintone::Command::Records do
           :get,
           'https://example.cybozu.com/k/v1/records.json?app=8&query=&fields%5b0%5d=%E3%83%AC%E3%82%B3%E3%83%BC%E3%83%89%E7%95%AA%E5%8F%B7&fields%5b1%5d=created_time&fields%5b2%5d=dropdown'
         )
-          .to_return(body: response_data.to_json, status: 200)
+          .to_return(body: response_data.to_json, status: 200,
+                     headers: { 'Content-type' => 'application/json' })
       end
 
       let(:fields) { %w(レコード番号 created_time dropdown) }
@@ -72,7 +75,8 @@ describe Kintone::Command::Records do
           'https://example.cybozu.com/k/v1/records.json'
         )
           .with(query: { app: 8, query: '' })
-          .to_return(body: response_data.to_json, status: 200)
+          .to_return(body: response_data.to_json, status: 200,
+                     headers: { 'Content-type' => 'application/json' })
       end
 
       let(:query) { nil }
@@ -98,7 +102,8 @@ describe Kintone::Command::Records do
         'https://example.cybozu.com/k/v1/records.json'
       )
         .with(body: request_body.to_json)
-        .to_return(body: response_body.to_json, status: 200)
+        .to_return(body: response_body.to_json, status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.register(app, records) }
@@ -145,7 +150,8 @@ describe Kintone::Command::Records do
         'https://example.cybozu.com/k/v1/records.json'
       )
         .with(body: request_body.to_json)
-        .to_return(body: response_body.to_json, status: 200)
+        .to_return(body: response_body.to_json, status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.update(app, records) }
@@ -247,7 +253,8 @@ describe Kintone::Command::Records do
         'https://example.cybozu.com/k/v1/records.json'
       )
         .with(body: request_body.to_json)
-        .to_return(body: '{}', status: 200)
+        .to_return(body: '{}', status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     context 'without revisions' do

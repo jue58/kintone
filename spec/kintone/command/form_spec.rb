@@ -15,7 +15,8 @@ describe Kintone::Command::Form do
           :get,
           'https://example.cybozu.com/k/v1/form.json?app=4'
         )
-          .to_return(body: "{\"result\":\"ok\"}", status: 200)
+          .to_return(body: "{\"result\":\"ok\"}", status: 200,
+                     headers: { 'Content-type' => 'application/json' })
       end
 
       let(:app) { 4 }

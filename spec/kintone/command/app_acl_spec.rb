@@ -16,7 +16,7 @@ describe Kintone::Command::AppAcl do
           'https://example.cybozu.com/k/v1/app/acl.json'
         )
           .with(body: { 'app' => 1, 'rights' => { 'p1' => 'abc', 'p2' => 'def' } }.to_json)
-          .to_return(body: '{}', status: 200)
+          .to_return(body: '{}', status: 200, headers: { 'Content-type' => 'application/json' })
       end
 
       let(:app) { 1 }

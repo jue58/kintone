@@ -12,7 +12,8 @@ describe Kintone::Command::App do
         'https://example.cybozu.com/k/v1/app.json'
       )
         .with(query: { id: id })
-        .to_return(body: response_data.to_json, status: 200)
+        .to_return(body: response_data.to_json, status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.get(id) }

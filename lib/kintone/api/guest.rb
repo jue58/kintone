@@ -22,10 +22,11 @@ class Kintone::Api
       :app,
       :apps,
       :bulk_request,
-      :bulk
+      :bulk,
+      :file
     ].freeze
 
-    def_delegators :@api, :get, :post, :put, :delete
+    def_delegators :@api, :get, :post, :put, :delete, :post_file
 
     def initialize(space_id, api)
       @api = api

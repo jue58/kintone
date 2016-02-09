@@ -50,7 +50,8 @@ describe Kintone::Api do
           query: query,
           headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }
         )
-        .to_return(body: "{\"abc\":\"def\"}", status: 200)
+        .to_return(body: "{\"abc\":\"def\"}", status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.get(path, params) }
@@ -100,7 +101,8 @@ describe Kintone::Api do
           },
           body: "{\"p1\":\"abc\",\"p2\":\"def\"}"
         )
-        .to_return(body: "{\"abc\":\"def\"}", status: 200)
+        .to_return(body: "{\"abc\":\"def\"}", status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.post(path, body) }
@@ -123,7 +125,8 @@ describe Kintone::Api do
           },
           body: "{\"p1\":\"abc\",\"p2\":\"def\"}"
         )
-        .to_return(body: "{\"abc\":\"def\"}", status: 200)
+        .to_return(body: "{\"abc\":\"def\"}", status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.put(path, body) }
@@ -143,7 +146,8 @@ describe Kintone::Api do
           body: { 'p1' => 'abc', 'p2' => 'def' }.to_json,
           headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }
         )
-        .to_return(body: "{\"abc\":\"def\"}", status: 200)
+        .to_return(body: "{\"abc\":\"def\"}", status: 200,
+                   headers: { 'Content-type' => 'application/json' })
     end
 
     subject { target.delete(path, params) }
@@ -151,6 +155,32 @@ describe Kintone::Api do
     let(:params) { { 'p1' => 'abc', 'p2' => 'def' } }
 
     it { is_expected.to eq 'abc' => 'def' }
+  end
+
+  describe '#post_file' do
+    before(:each) do
+      stub_request(
+          :post,
+          'https://www.example.com/k/v1/path'
+      )
+          .with { attachment }
+          .to_return(body: "{\"fileKey\":\"abc\"}", status: 200,
+                     headers: { 'Content-type' => 'application/json' })
+
+      expect(Faraday::UploadIO).to receive(:new)
+                                       .with(path, content_type, original_filename,
+                                             'Content-Disposition' => 'form-data')
+                                       .and_return(attachment)
+    end
+
+    subject { target.post_file(url, path, content_type, original_filename) }
+    let(:attachment) { double('attachment') }
+    let(:url) { '/k/v1/path' }
+    let(:path) { '/path/to/file.txt' }
+    let(:content_type) { 'text/plain' }
+    let(:original_filename) { 'fileName.txt' }
+
+    it { is_expected.to eq 'abc' }
   end
 
   describe '#record' do
@@ -253,5 +283,11 @@ describe Kintone::Api do
     subject { target.bulk }
 
     it { is_expected.to be_a_kind_of(Kintone::Command::BulkRequest) }
+  end
+
+  describe '#file' do
+    subject { target.file }
+
+    it { is_expected.to be_a_kind_of(Kintone::Command::File) }
   end
 end
