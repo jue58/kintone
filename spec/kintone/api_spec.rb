@@ -8,7 +8,7 @@ describe Kintone::Api do
   let(:target) { Kintone::Api.new(domain, user, password) }
   let(:domain) { 'www.example.com' }
 
-  context 'ユーザー認証' do
+  context 'ユーザー認証の時' do
     let(:user) { 'Administrator' }
     let(:password) { 'cybozu' }
 
@@ -296,7 +296,7 @@ describe Kintone::Api do
     end
   end
 
-  context 'APIトークン認証' do
+  context 'APIトークン認証の時' do
     let(:user) { 'token-api' }
     let(:password) { nil }
 
