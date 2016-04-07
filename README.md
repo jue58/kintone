@@ -20,7 +20,12 @@ or execute `bundle install` command after you insert the following into Gemfile
 
 ```ruby
 require 'kintone'
+
+# Use password authentication
 api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
+
+# Use token authentication
+api = Kintone::Api.new("example.cybozu.com", "authtoken")
 ```
 
 ### Supported API
