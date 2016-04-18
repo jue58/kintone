@@ -93,6 +93,26 @@ describe Kintone::Command::Records do
 
       it { expect { subject }.to raise_error(NoMethodError) }
     end
+
+    context 'totalCountにtrueを指定した時' do
+      subject { target.get(app, query, fields, total_count: total_count) }
+      before(:each) do
+        stub_request(
+            :get,
+            'https://example.cybozu.com/k/v1/records.json'
+        )
+            .with(query: { app: 8, query: '', totalCount: true })
+            .to_return(body: response_data.to_json, status: 200,
+                       headers: { 'Content-type' => 'application/json' })
+      end
+
+      def response_data
+        { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
+      end
+
+      let(:total_count) { true }
+      it { expect(subject).to eq response_data }
+    end
   end
 
   describe '#register' do
