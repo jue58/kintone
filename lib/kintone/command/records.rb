@@ -7,7 +7,7 @@ class Kintone::Command::Records < Kintone::Command
 
   def get(app, query, fields, total_count: nil)
     params = { app: app, query: query.to_s }
-    params[:total_count] = total_count if total_count
+    params[:totalCount] = total_count if total_count
     fields.each_with_index { |v, i| params["fields[#{i}]"] = v }
     @api.get(@url, params)
   end
