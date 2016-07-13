@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 0.24.1'
   spec.add_development_dependency 'webmock', '~> 1.18'
   spec.add_development_dependency 'rspec-parameterized', '~> 0.1.2'
+  spec.add_development_dependency 'coveralls'
 end
