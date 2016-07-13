@@ -1,6 +1,10 @@
 # kintone
 
 [![Build Status](https://travis-ci.org/jue58/kintone.svg?branch=master)](https://travis-ci.org/jue58/kintone)
+[![codebeat badge](https://codebeat.co/badges/7f66de05-57a4-4712-9706-0f33169f530b)](https://codebeat.co/projects/github-com-jue58-kintone)
+[![Coverage Status](https://coveralls.io/repos/github/jue58/kintone/badge.svg?branch=add-coveralls-settings)](https://coveralls.io/github/jue58/kintone?branch=add-coveralls-settings)
+[![Inline docs](http://inch-ci.org/github/jue58/kintone.svg?branch=master&style=shields)](http://inch-ci.org/github/jue58/kintone)
+[![Gem Version](https://badge.fury.io/rb/kintone.svg)](https://badge.fury.io/rb/kintone)
 
 A Ruby gem for communicating with the [kintone](https://kintone.cybozu.com/us/) REST API
 
