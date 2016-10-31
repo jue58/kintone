@@ -9,18 +9,15 @@ describe Kintone::Command::File do
   describe '#get' do
     before(:each) do
       stub_request(
-          :get,
-          'https://example.cybozu.com/k/v1/file.json?fileKey=file-key-string'
+        :get,
+        'https://example.cybozu.com/k/v1/file.json?fileKey=file-key-string'
       )
-          .to_return(body: attachment, status: 200,
-                     headers: { 'Content-type' => 'image/gif' })
+        .to_return(body: attachment, status: 200, headers: { 'Content-type' => 'image/gif' })
     end
 
     subject { target.get(fileKey) }
 
-    let(:attachment) do
-      Base64.decode64('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==')
-    end
+    let(:attachment) { Base64.decode64('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==') } # rubocop:disable Style/LineLength
     let(:fileKey) { 'file-key-string' }
 
     it { expect(subject).to eq attachment }
@@ -28,11 +25,10 @@ describe Kintone::Command::File do
 
   describe '#register' do
     before(:each) do
-      expect(api).to receive(:post_file)
-                         .with(
-                             target.instance_variable_get('@url'),
-                             path, content_type, original_filename)
-                         .and_return('c15b3870-7505-4ab6-9d8d-b9bdbc74f5d6')
+      expect(api)
+        .to receive(:post_file)
+        .with(target.instance_variable_get('@url'), path, content_type, original_filename)
+        .and_return('c15b3870-7505-4ab6-9d8d-b9bdbc74f5d6')
     end
 
     subject { target.register(path, content_type, original_filename) }

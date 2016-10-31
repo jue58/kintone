@@ -6,7 +6,7 @@ class Kintone::Api
   class Guest
     extend Forwardable
 
-    GUEST_PATH = '/k/guest/%s/v1/'
+    GUEST_PATH = '/k/guest/%s/v1/'.freeze
     ACCESSIBLE_COMMAND = [
       :record,
       :records,
@@ -41,8 +41,12 @@ class Kintone::Api
       if ACCESSIBLE_COMMAND.include?(name)
         CommandAccessor.send(name, self)
       else
-        super(name, *args)
+        super
       end
+    end
+
+    def respond_to_missing?(name, *args)
+      ACCESSIBLE_COMMAND.include?(name) || super
     end
 
     class CommandAccessor

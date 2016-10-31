@@ -52,8 +52,11 @@ describe Kintone::Api do
             query: query,
             headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }
           )
-          .to_return(body: "{\"abc\":\"def\"}", status: 200,
-                     headers: { 'Content-type' => 'application/json' })
+          .to_return(
+            body: '{"abc":"def"}',
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
       end
 
       subject { target.get(path, params) }
@@ -101,10 +104,13 @@ describe Kintone::Api do
               'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=',
               'Content-Type' => 'application/json'
             },
-            body: "{\"p1\":\"abc\",\"p2\":\"def\"}"
+            body: '{"p1":"abc","p2":"def"}'
           )
-          .to_return(body: "{\"abc\":\"def\"}", status: 200,
-                     headers: { 'Content-type' => 'application/json' })
+          .to_return(
+            body: '{"abc":"def"}',
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
       end
 
       subject { target.post(path, body) }
@@ -125,10 +131,13 @@ describe Kintone::Api do
               'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=',
               'Content-Type' => 'application/json'
             },
-            body: "{\"p1\":\"abc\",\"p2\":\"def\"}"
+            body: '{"p1":"abc","p2":"def"}'
           )
-          .to_return(body: "{\"abc\":\"def\"}", status: 200,
-                     headers: { 'Content-type' => 'application/json' })
+          .to_return(
+            body: '{"abc":"def"}',
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
       end
 
       subject { target.put(path, body) }
@@ -148,8 +157,11 @@ describe Kintone::Api do
             body: { 'p1' => 'abc', 'p2' => 'def' }.to_json,
             headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }
           )
-          .to_return(body: "{\"abc\":\"def\"}", status: 200,
-                     headers: { 'Content-type' => 'application/json' })
+          .to_return(
+            body: '{"abc":"def"}',
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
       end
 
       subject { target.delete(path, params) }
@@ -162,19 +174,17 @@ describe Kintone::Api do
     describe '#post_file' do
       before(:each) do
         stub_request(
-            :post,
-            'https://www.example.com/k/v1/path'
+          :post,
+          'https://www.example.com/k/v1/path'
         )
-            .with(headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }) do
-              attachment
-            end
-            .to_return(body: "{\"fileKey\":\"abc\"}", status: 200,
-                       headers: { 'Content-type' => 'application/json' })
+          .with(headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }) { attachment } # rubocop:disable Style/LineLength
+          .to_return(
+            body: '{"fileKey":"abc"}',
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
 
-        expect(Faraday::UploadIO).to receive(:new)
-                                         .with(path, content_type, original_filename,
-                                               'Content-Disposition' => 'form-data')
-                                         .and_return(attachment)
+        expect(Faraday::UploadIO).to receive(:new).with(path, content_type, original_filename).and_return(attachment) # rubocop:disable Style/LineLength
       end
 
       subject { target.post_file(url, path, content_type, original_filename) }
@@ -303,15 +313,15 @@ describe Kintone::Api do
     describe '#get' do
       before(:each) do
         stub_request(
-            :get,
-            'https://www.example.com/k/v1/path'
+          :get,
+          'https://www.example.com/k/v1/path'
         )
-            .with(
-                query: query,
-                headers: { 'X-Cybozu-API-Token' => 'token-api' }
-            )
-            .to_return(body: "{\"abc\":\"def\"}", status: 200,
-                       headers: { 'Content-type' => 'application/json' })
+          .with(query: query, headers: { 'X-Cybozu-API-Token' => 'token-api' })
+          .to_return(
+            body: '{"abc":"def"}',
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
       end
 
       subject { target.get(path, params) }
@@ -330,18 +340,18 @@ describe Kintone::Api do
     describe '#post' do
       before(:each) do
         stub_request(
-            :post,
-            'https://www.example.com/k/v1/path'
+          :post,
+          'https://www.example.com/k/v1/path'
         )
-            .with(
-                headers: {
-                  'X-Cybozu-API-Token' => 'token-api',
-                  'Content-Type' => 'application/json'
-                },
-                body: "{\"p1\":\"abc\",\"p2\":\"def\"}"
-            )
-            .to_return(body: "{\"abc\":\"def\"}", status: 200,
-                       headers: { 'Content-type' => 'application/json' })
+          .with(
+            headers: { 'X-Cybozu-API-Token' => 'token-api', 'Content-Type' => 'application/json' },
+            body: '{"p1":"abc","p2":"def"}'
+          )
+          .to_return(
+            body: '{"abc":"def"}',
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
       end
 
       subject { target.post(path, body) }
@@ -354,18 +364,18 @@ describe Kintone::Api do
     describe '#put' do
       before(:each) do
         stub_request(
-            :put,
-            'https://www.example.com/k/v1/path'
+          :put,
+          'https://www.example.com/k/v1/path'
         )
-            .with(
-                headers: {
-                  'X-Cybozu-API-Token' => 'token-api',
-                  'Content-Type' => 'application/json'
-                },
-                body: "{\"p1\":\"abc\",\"p2\":\"def\"}"
-            )
-            .to_return(body: "{\"abc\":\"def\"}", status: 200,
-                       headers: { 'Content-type' => 'application/json' })
+          .with(
+            headers: { 'X-Cybozu-API-Token' => 'token-api', 'Content-Type' => 'application/json' },
+            body: '{"p1":"abc","p2":"def"}'
+          )
+          .to_return(
+            body: '{"abc":"def"}',
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
       end
 
       subject { target.put(path, body) }
@@ -378,15 +388,18 @@ describe Kintone::Api do
     describe '#delete' do
       before(:each) do
         stub_request(
-            :delete,
-            'https://www.example.com/k/v1/path'
+          :delete,
+          'https://www.example.com/k/v1/path'
         )
-            .with(
-                body: { 'p1' => 'abc', 'p2' => 'def' }.to_json,
-                headers: { 'X-Cybozu-API-Token' => 'token-api' }
-            )
-            .to_return(body: "{\"abc\":\"def\"}", status: 200,
-                       headers: { 'Content-type' => 'application/json' })
+          .with(
+            body: { 'p1' => 'abc', 'p2' => 'def' }.to_json,
+            headers: { 'X-Cybozu-API-Token' => 'token-api' }
+          )
+          .to_return(
+            body: '{"abc":"def"}',
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
       end
 
       subject { target.delete(path, params) }
@@ -399,19 +412,17 @@ describe Kintone::Api do
     describe '#post_file' do
       before(:each) do
         stub_request(
-            :post,
-            'https://www.example.com/k/v1/path'
+          :post,
+          'https://www.example.com/k/v1/path'
         )
-            .with(
-              headers: { 'X-Cybozu-API-Token' => 'token-api' }
-            )
-            .to_return(body: "{\"fileKey\":\"abc\"}", status: 200,
-                       headers: { 'Content-type' => 'application/json' })
+          .with(headers: { 'X-Cybozu-API-Token' => 'token-api' })
+          .to_return(
+            body: '{"fileKey":"abc"}',
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
 
-        expect(Faraday::UploadIO).to receive(:new)
-                                         .with(path, content_type, original_filename,
-                                               'Content-Disposition' => 'form-data')
-                                         .and_return(attachment)
+        expect(Faraday::UploadIO).to receive(:new).with(path, content_type, original_filename).and_return(attachment) # rubocop:disable Style/LineLength
       end
 
       subject { target.post_file(url, path, content_type, original_filename) }

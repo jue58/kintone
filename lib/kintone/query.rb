@@ -68,7 +68,7 @@ class Kintone::Query
     to_s
   end
 
-  alias_method :f, :field
+  alias f field
 
   private
 

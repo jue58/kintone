@@ -7,8 +7,8 @@ require 'kintone/api/guest'
 require 'kintone/query'
 
 class Kintone::Api
-  BASE_PATH = '/k/v1/'
-  COMMAND = '%s.json'
+  BASE_PATH = '/k/v1/'.freeze
+  COMMAND = '%s.json'.freeze
   ACCESSIBLE_COMMAND = [
     :record,
     :records,
@@ -92,9 +92,7 @@ class Kintone::Api
       @connection.post do |request|
         request.url url
         request.headers['Content-Type'] = 'multipart/form-data'
-        request.body = { file: Faraday::UploadIO.new(
-          path, content_type, original_filename,
-          'Content-Disposition' => 'form-data') }
+        request.body = { file: Faraday::UploadIO.new(path, content_type, original_filename) }
       end
     response.body['fileKey']
   end
@@ -103,8 +101,12 @@ class Kintone::Api
     if ACCESSIBLE_COMMAND.include?(name)
       CommandAccessor.send(name, self)
     else
-      super(name, *args)
+      super
     end
+  end
+
+  def respond_to_missing?(name, *args)
+    ACCESSIBLE_COMMAND.include?(name) || super
   end
 
   class CommandAccessor

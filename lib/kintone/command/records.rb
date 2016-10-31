@@ -26,5 +26,5 @@ class Kintone::Command::Records < Kintone::Command
     @api.delete(@url, params)
   end
 
-  alias_method :create, :register
+  alias create register
 end

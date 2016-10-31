@@ -13,7 +13,7 @@ describe Kintone::Command::Record do
         :get,
         'https://www.example.com/k/v1/record.json?app=8&id=100'
       )
-        .to_return(body: "{\"result\":\"ok\"}", status: 200,
+        .to_return(body: '{"result":"ok"}', status: 200,
                    headers: { 'Content-type' => 'application/json' })
     end
 

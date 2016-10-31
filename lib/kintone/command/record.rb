@@ -19,5 +19,5 @@ class Kintone::Command::Record < Kintone::Command
     @api.put(@url, body)
   end
 
-  alias_method :create, :register
+  alias create register
 end
