@@ -34,3 +34,10 @@ Style/AsciiComments:
 
 CyclomaticComplexity:
   Max: 10
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/SymbolProc:
+  Exclude:
+    - 'lib/kintone/query.rb'

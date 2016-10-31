@@ -40,7 +40,7 @@ describe Kintone::Command::Records do
                      headers: { 'Content-type' => 'application/json' })
       end
 
-      let(:query) { "updated_time > \"2012-02-03T09:00:00+0900\" and updated_time < \"2012-02-03T10:00:00+0900\"" } # rubocop:disable Style/LineLength
+      let(:query) { 'updated_time > "2012-02-03T09:00:00+0900" and updated_time < "2012-02-03T10:00:00+0900"' } # rubocop:disable Style/LineLength
 
       def response_data
         { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
@@ -98,12 +98,15 @@ describe Kintone::Command::Records do
       subject { target.get(app, query, fields, total_count: total_count) }
       before(:each) do
         stub_request(
-            :get,
-            'https://example.cybozu.com/k/v1/records.json'
+          :get,
+          'https://example.cybozu.com/k/v1/records.json'
         )
-            .with(query: { app: 8, query: '', totalCount: true })
-            .to_return(body: response_data.to_json, status: 200,
-                       headers: { 'Content-type' => 'application/json' })
+          .with(query: { app: 8, query: '', totalCount: true })
+          .to_return(
+            body: response_data.to_json,
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
       end
 
       def response_data

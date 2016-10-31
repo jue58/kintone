@@ -99,6 +99,6 @@ class Kintone::Command
       SpaceGuests.new(api)
     end
 
-    alias_method :bulk, :bulk_request
+    alias bulk bulk_request
   end
 end
