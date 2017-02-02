@@ -15,10 +15,9 @@ describe Kintone::Api do
     describe '#get_url' do
       subject { target.get_url(command) }
 
-      context '' do
-        let(:command) { 'path' }
-        it { is_expected.to eq('/k/v1/path.json') }
-      end
+      let(:command) { 'path' }
+
+      it { is_expected.to eq('/k/v1/path.json') }
     end
 
     describe '#guest' do
@@ -91,6 +90,28 @@ describe Kintone::Api do
 
         it { is_expected.to eq 'abc' => 'def' }
       end
+
+      context 'fail to request' do
+        before(:each) do
+          stub_request(
+            :get,
+            'https://www.example.com/k/v1/path'
+          )
+            .with(
+              query: query,
+              headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }
+            )
+            .to_return(
+              body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
+              status: 500
+            )
+        end
+
+        let(:params) { {} }
+        let(:query) { nil }
+
+        it { expect { subject }.to raise_error Kintone::KintoneError }
+      end
     end
 
     describe '#post' do
@@ -118,6 +139,28 @@ describe Kintone::Api do
       let(:body) { { 'p1' => 'abc', 'p2' => 'def' } }
 
       it { is_expected.to eq 'abc' => 'def' }
+
+      context 'fail to request' do
+        before(:each) do
+          stub_request(
+            :post,
+            'https://www.example.com/k/v1/path'
+          )
+            .with(
+              headers: {
+                'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=',
+                'Content-Type' => 'application/json'
+              },
+              body: '{"p1":"abc","p2":"def"}'
+            )
+            .to_return(
+              body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
+              status: 500
+            )
+        end
+
+        it { expect { subject }.to raise_error Kintone::KintoneError }
+      end
     end
 
     describe '#put' do
@@ -145,6 +188,28 @@ describe Kintone::Api do
       let(:body) { { 'p1' => 'abc', 'p2' => 'def' } }
 
       it { is_expected.to eq 'abc' => 'def' }
+
+      context 'fail to request' do
+        before(:each) do
+          stub_request(
+            :put,
+            'https://www.example.com/k/v1/path'
+          )
+            .with(
+              headers: {
+                'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=',
+                'Content-Type' => 'application/json'
+              },
+              body: '{"p1":"abc","p2":"def"}'
+            )
+            .to_return(
+              body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
+              status: 500
+            )
+        end
+
+        it { expect { subject }.to raise_error Kintone::KintoneError }
+      end
     end
 
     describe '#delete' do
@@ -169,6 +234,25 @@ describe Kintone::Api do
       let(:params) { { 'p1' => 'abc', 'p2' => 'def' } }
 
       it { is_expected.to eq 'abc' => 'def' }
+
+      context 'fail to request' do
+        before(:each) do
+          stub_request(
+            :delete,
+            'https://www.example.com/k/v1/path'
+          )
+            .with(
+              body: { 'p1' => 'abc', 'p2' => 'def' }.to_json,
+              headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }
+            )
+            .to_return(
+              body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
+              status: 500
+            )
+        end
+
+        it { expect { subject }.to raise_error Kintone::KintoneError }
+      end
     end
 
     describe '#post_file' do
@@ -195,6 +279,22 @@ describe Kintone::Api do
       let(:original_filename) { 'fileName.txt' }
 
       it { is_expected.to eq 'abc' }
+
+      context 'fail to request' do
+        before(:each) do
+          stub_request(
+            :post,
+            'https://www.example.com/k/v1/path'
+          )
+            .with(headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }) { attachment } # rubocop:disable Style/LineLength
+            .to_return(
+              body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
+              status: 500
+            )
+        end
+
+        it { expect { subject }.to raise_error Kintone::KintoneError }
+      end
     end
 
     describe '#record' do

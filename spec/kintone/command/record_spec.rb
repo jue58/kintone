@@ -9,12 +9,12 @@ describe Kintone::Command::Record do
 
   describe '#get' do
     before(:each) do
-      stub_request(
-        :get,
-        'https://www.example.com/k/v1/record.json?app=8&id=100'
-      )
-        .to_return(body: '{"result":"ok"}', status: 200,
-                   headers: { 'Content-type' => 'application/json' })
+      stub_request(:get, 'https://www.example.com/k/v1/record.json?app=8&id=100')
+        .to_return(
+          body: '{"result":"ok"}',
+          status: 200,
+          headers: { 'Content-Type' => 'application/json' }
+        )
     end
 
     subject { target.get(app, id) }
@@ -29,6 +29,22 @@ describe Kintone::Command::Record do
     with_them do
       it { expect(subject).to eq 'result' => 'ok' }
     end
+
+    context 'fail to request' do
+      before(:each) do
+        stub_request(:get, 'https://www.example.com/k/v1/record.json?app=8&id=100')
+          .to_return(
+            body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
+            status: 500,
+            headers: { 'Content-Type' => 'application/json' }
+          )
+      end
+
+      let(:app) { 8 }
+      let(:id) { 100 }
+
+      it { expect { subject }.to raise_error Kintone::KintoneError }
+    end
   end
 
   describe '#register' do
@@ -38,8 +54,11 @@ describe Kintone::Command::Record do
         'https://www.example.com/k/v1/record.json'
       )
         .with(body: request_body.to_json)
-        .to_return(body: response_body.to_json, status: 200,
-                   headers: { 'Content-type' => 'application/json' })
+        .to_return(
+          body: response_body.to_json,
+          status: 200,
+          headers: { 'Content-type' => 'application/json' }
+        )
     end
 
     subject { target.register(app, record) }
@@ -80,6 +99,31 @@ describe Kintone::Command::Record do
 
       it { expect(subject).to eq response_body }
     end
+
+    context 'fail to request' do
+      before(:each) do
+        stub_request(
+          :post,
+          'https://www.example.com/k/v1/record.json'
+        )
+          .with(body: request_body.to_json)
+          .to_return(
+            body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
+            status: 500,
+            headers: { 'Content-Type' => 'application/json' }
+          )
+      end
+
+      let(:record) do
+        {
+          'number' => { 'value' => '123456' },
+          'rich_editor' => { 'value' => 'testtest' },
+          'user_select' => { 'value' => [{ 'code' => 'sato' }] }
+        }
+      end
+
+      it { expect { subject }.to raise_error Kintone::KintoneError }
+    end
   end
 
   describe '#update' do
@@ -89,8 +133,11 @@ describe Kintone::Command::Record do
         'https://www.example.com/k/v1/record.json'
       )
         .with(body: request_body.to_json)
-        .to_return(body: response_body.to_json, status: 200,
-                   headers: { 'Content-type' => 'application/json' })
+        .to_return(
+          body: response_body.to_json,
+          status: 200,
+          headers: { 'Content-type' => 'application/json' }
+        )
     end
 
     subject { target.update(app, id, record) }
@@ -134,6 +181,26 @@ describe Kintone::Command::Record do
 
         it { expect(subject).to match 'revision' => '2' }
       end
+    end
+
+    context 'fail to request' do
+      before(:each) do
+        stub_request(
+          :put,
+          'https://www.example.com/k/v1/record.json'
+        )
+          .with(body: request_body.to_json)
+          .to_return(
+            body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
+            status: 500,
+            headers: { 'Content-Type' => 'application/json' }
+          )
+      end
+
+      let(:request_body) { { 'app' => 4, 'id' => 1, 'record' => hash_record } }
+      let(:record) { hash_record }
+
+      it { expect { subject }.to raise_error Kintone::KintoneError }
     end
   end
 end

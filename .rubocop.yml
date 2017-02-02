@@ -17,7 +17,7 @@ Style/Documentation:
   Enabled: false
 
 # Configuration parameters: AllowURI.
-Style/LineLength:
+Metrics/LineLength:
   Max: 1_00
 
 # Cop supports --auto-correct.
@@ -41,3 +41,6 @@ Style/FrozenStringLiteralComment:
 Style/SymbolProc:
   Exclude:
     - 'lib/kintone/query.rb'
+
+Style/SignalException:
+  EnforcedStyle: only_raise

@@ -13,8 +13,11 @@ describe Kintone::Command::Guests do
         'https://example.cybozu.com/k/v1/guests.json'
       )
         .with(body: { guests: guests }.to_json)
-        .to_return(body: '{}', status: 200,
-                   headers: { 'Content-type' => 'application/json' })
+        .to_return(
+          body: '{}',
+          status: 200,
+          headers: { 'Content-type' => 'application/json' }
+        )
     end
 
     subject { target.register(guests) }
@@ -39,6 +42,23 @@ describe Kintone::Command::Guests do
     end
 
     it { is_expected.to be_truthy }
+
+    context 'fail to request' do
+      before(:each) do
+        stub_request(
+          :post,
+          'https://example.cybozu.com/k/v1/guests.json'
+        )
+          .with(body: { guests: guests }.to_json)
+          .to_return(
+            body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
+            status: 500,
+            headers: { 'Content-type' => 'application/json' }
+          )
+      end
+
+      it { expect { subject }.to raise_error Kintone::KintoneError }
+    end
   end
 
   describe '#delete' do
@@ -48,8 +68,11 @@ describe Kintone::Command::Guests do
         'https://example.cybozu.com/k/v1/guests.json'
       )
         .with(body: { guests: guests }.to_json)
-        .to_return(body: '{}', status: 200,
-                   headers: { 'Content-type' => 'application/json' })
+        .to_return(
+          body: '{}',
+          status: 200,
+          headers: { 'Content-type' => 'application/json' }
+        )
     end
 
     subject { target.delete(guests) }
@@ -63,5 +86,22 @@ describe Kintone::Command::Guests do
     end
 
     it { is_expected.to be_truthy }
+
+    context 'fail to request' do
+      before(:each) do
+        stub_request(
+          :delete,
+          'https://example.cybozu.com/k/v1/guests.json'
+        )
+          .with(body: { guests: guests }.to_json)
+          .to_return(
+            body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
+            status: 500,
+            headers: { 'Content-Type' => 'application/json' }
+          )
+      end
+
+      it { expect { subject }.to raise_error Kintone::KintoneError }
+    end
   end
 end

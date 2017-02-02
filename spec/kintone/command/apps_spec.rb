@@ -15,8 +15,11 @@ describe Kintone::Command::Apps do
           'https://example.cybozu.com/k/v1/apps.json'
         )
           .with(query: query)
-          .to_return(body: { apps: [] }.to_json, status: 200,
-                     headers: { 'Content-type' => 'application/json' })
+          .to_return(
+            body: { apps: [] }.to_json,
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
       end
 
       where(:params, :query) do
@@ -50,6 +53,26 @@ describe Kintone::Command::Apps do
       let(:params) { nil }
 
       it { expect { subject }.to raise_error NoMethodError }
+    end
+
+    context 'fail to request' do
+      before(:each) do
+        stub_request(
+          :get,
+          'https://example.cybozu.com/k/v1/apps.json'
+        )
+          .with(query: query)
+          .to_return(
+            body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
+            status: 500,
+            headers: { 'Content-Type' => 'application/json' }
+          )
+      end
+
+      let(:params) { { ids: [100, 200] } }
+      let(:query) { 'ids[0]=100&ids[1]=200' }
+
+      it { expect { subject }.to raise_error Kintone::KintoneError }
     end
   end
 end
