@@ -17,7 +17,7 @@ describe Kintone::Command::File do
 
     subject { target.get(fileKey) }
 
-    let(:attachment) { Base64.decode64('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==') } # rubocop:disable Style/LineLength
+    let(:attachment) { Base64.decode64('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==') } # rubocop:disable Metrics/LineLength
     let(:fileKey) { 'file-key-string' }
 
     it { expect(subject).to eq attachment }

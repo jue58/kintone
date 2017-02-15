@@ -47,7 +47,7 @@ describe Kintone::Command::Records do
           )
       end
 
-      let(:query) { 'updated_time > "2012-02-03T09:00:00+0900" and updated_time < "2012-02-03T10:00:00+0900"' } # rubocop:disable Style/LineLength
+      let(:query) { 'updated_time > "2012-02-03T09:00:00+0900" and updated_time < "2012-02-03T10:00:00+0900"' } # rubocop:disable Metrics/LineLength
 
       def response_data
         { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
