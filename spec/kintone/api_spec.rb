@@ -261,14 +261,14 @@ describe Kintone::Api do
           :post,
           'https://www.example.com/k/v1/path'
         )
-          .with(headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }) { attachment } # rubocop:disable Style/LineLength
+          .with(headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }) { attachment } # rubocop:disable Metrics/LineLength
           .to_return(
             body: '{"fileKey":"abc"}',
             status: 200,
             headers: { 'Content-type' => 'application/json' }
           )
 
-        expect(Faraday::UploadIO).to receive(:new).with(path, content_type, original_filename).and_return(attachment) # rubocop:disable Style/LineLength
+        expect(Faraday::UploadIO).to receive(:new).with(path, content_type, original_filename).and_return(attachment) # rubocop:disable Metrics/LineLength
       end
 
       subject { target.post_file(url, path, content_type, original_filename) }
@@ -286,7 +286,7 @@ describe Kintone::Api do
             :post,
             'https://www.example.com/k/v1/path'
           )
-            .with(headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }) { attachment } # rubocop:disable Style/LineLength
+            .with(headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }) { attachment } # rubocop:disable Metrics/LineLength
             .to_return(
               body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
               status: 500
@@ -522,7 +522,7 @@ describe Kintone::Api do
             headers: { 'Content-type' => 'application/json' }
           )
 
-        expect(Faraday::UploadIO).to receive(:new).with(path, content_type, original_filename).and_return(attachment) # rubocop:disable Style/LineLength
+        expect(Faraday::UploadIO).to receive(:new).with(path, content_type, original_filename).and_return(attachment) # rubocop:disable Metrics/LineLength
       end
 
       subject { target.post_file(url, path, content_type, original_filename) }
