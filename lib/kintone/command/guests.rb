@@ -13,5 +13,5 @@ class Kintone::Command::Guests < Kintone::Command
     @api.delete(@url, guests: guests)
   end
 
-  alias_method :create, :register
+  alias create register
 end

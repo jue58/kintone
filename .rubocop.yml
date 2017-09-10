@@ -17,7 +17,7 @@ Style/Documentation:
   Enabled: false
 
 # Configuration parameters: AllowURI.
-Style/LineLength:
+Metrics/LineLength:
   Max: 1_00
 
 # Cop supports --auto-correct.
@@ -34,3 +34,13 @@ Style/AsciiComments:
 
 CyclomaticComplexity:
   Max: 10
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/SymbolProc:
+  Exclude:
+    - 'lib/kintone/query.rb'
+
+Style/SignalException:
+  EnforcedStyle: only_raise

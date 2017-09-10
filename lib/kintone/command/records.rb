@@ -5,8 +5,9 @@ class Kintone::Command::Records < Kintone::Command
     'records'
   end
 
-  def get(app, query, fields)
+  def get(app, query, fields, total_count: nil)
     params = { app: app, query: query.to_s }
+    params[:totalCount] = total_count if total_count
     fields.each_with_index { |v, i| params["fields[#{i}]"] = v }
     @api.get(@url, params)
   end
@@ -25,5 +26,5 @@ class Kintone::Command::Records < Kintone::Command
     @api.delete(@url, params)
   end
 
-  alias_method :create, :register
+  alias create register
 end
