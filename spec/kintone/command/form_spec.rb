@@ -10,8 +10,9 @@ describe Kintone::Command::Form do
     before(:each) do
       stub_request(
         :get,
-        'https://example.cybozu.com/k/v1/form.json?app=4'
+        'https://example.cybozu.com/k/v1/form.json'
       )
+        .with(body: request_body.to_json)
         .to_return(
           body: '{"result":"ok"}',
           status: 200,
@@ -22,6 +23,7 @@ describe Kintone::Command::Form do
     subject { target.get(app) }
 
     let(:app) { 4 }
+    let(:request_body) { { app: app } }
 
     it { expect(subject).to eq 'result' => 'ok' }
 
@@ -29,8 +31,9 @@ describe Kintone::Command::Form do
       before(:each) do
         stub_request(
           :get,
-          'https://example.cybozu.com/k/v1/form.json?app=4'
+          'https://example.cybozu.com/k/v1/form.json'
         )
+          .with(body: request_body.to_json)
           .to_return(
             body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
             status: 500,

@@ -12,7 +12,7 @@ describe Kintone::Command::SpaceMembers do
         :get,
         'https://example.cybozu.com/k/v1/space/members.json'
       )
-        .with(query: { id: id })
+        .with(body: request_body.to_json)
         .to_return(
           body: response_data.to_json,
           status: 200,
@@ -23,6 +23,7 @@ describe Kintone::Command::SpaceMembers do
     subject { target.get(id) }
 
     let(:id) { 1 }
+    let(:request_body) { { id: id } }
     let(:response_data) { { 'members' => members } }
     let(:members) do
       [
@@ -42,7 +43,7 @@ describe Kintone::Command::SpaceMembers do
           :get,
           'https://example.cybozu.com/k/v1/space/members.json'
         )
-          .with(query: { id: id })
+          .with(body: request_body.to_json)
           .to_return(
             body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
             status: 500,

@@ -10,8 +10,9 @@ describe Kintone::Command::File do
     before(:each) do
       stub_request(
         :get,
-        'https://example.cybozu.com/k/v1/file.json?fileKey=file-key-string'
+        'https://example.cybozu.com/k/v1/file.json'
       )
+        .with(body: request_body.to_json)
         .to_return(body: attachment, status: 200, headers: { 'Content-type' => 'image/gif' })
     end
 
@@ -19,6 +20,7 @@ describe Kintone::Command::File do
 
     let(:attachment) { Base64.decode64('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==') } # rubocop:disable Metrics/LineLength
     let(:fileKey) { 'file-key-string' }
+    let(:request_body) { { fileKey: fileKey } }
 
     it { expect(subject).to eq attachment }
 
@@ -26,8 +28,9 @@ describe Kintone::Command::File do
       before(:each) do
         stub_request(
           :get,
-          'https://example.cybozu.com/k/v1/file.json?fileKey=file-key-string'
+          'https://example.cybozu.com/k/v1/file.json'
         )
+          .with(body: request_body.to_json)
           .to_return(
             body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
             status: 500,

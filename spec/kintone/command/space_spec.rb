@@ -12,7 +12,7 @@ describe Kintone::Command::Space do
         :get,
         'https://example.cybozu.com/k/v1/space.json'
       )
-        .with(query: { id: 1 })
+        .with(body: request_body.to_json)
         .to_return(
           body: result.to_json,
           status: 200,
@@ -23,6 +23,7 @@ describe Kintone::Command::Space do
     subject { target.get(id) }
 
     let(:id) { 1 }
+    let(:request_body) { { id: id } }
     let(:result) { { 'id' => '1', 'name' => 'sample space' } }
 
     it { expect(subject).to eq(result) }
@@ -33,7 +34,7 @@ describe Kintone::Command::Space do
           :get,
           'https://example.cybozu.com/k/v1/space.json'
         )
-          .with(query: { id: 1 })
+          .with(body: request_body.to_json)
           .to_return(
             body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
             status: 500,
