@@ -16,7 +16,9 @@ describe Kintone::Command::Records do
     let(:request_body) { { app: app, query: query.to_s, totalCount: false, fields: fields } }
 
     context 'アプリIDだけ指定した時' do
-      let(:response_data) { { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] } }
+      let(:response_data) do
+        { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
+      end
 
       before(:each) do
         stub_request(
@@ -49,7 +51,9 @@ describe Kintone::Command::Records do
       end
 
       let(:query) { 'updated_time > "2012-02-03T09:00:00+0900" and updated_time < "2012-02-03T10:00:00+0900"' } # rubocop:disable Metrics/LineLength
-      let(:response_data) { { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] } }
+      let(:response_data) do
+        { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
+      end
 
       it { expect(subject).to eq response_data }
     end
@@ -69,7 +73,9 @@ describe Kintone::Command::Records do
       end
 
       let(:fields) { %w(レコード番号 created_time dropdown) }
-      let(:response_data) { { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] } }
+      let(:response_data) do
+        { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
+      end
 
       it { expect(subject).to eq response_data }
     end
@@ -89,7 +95,9 @@ describe Kintone::Command::Records do
       end
 
       let(:query) { nil }
-      let(:response_data) { { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] } }
+      let(:response_data) do
+        { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
+      end
 
       it { expect(subject).to eq response_data }
     end
@@ -97,7 +105,9 @@ describe Kintone::Command::Records do
     context 'fieldsにnilを指定した時' do
       let(:fields) { nil }
       let(:request_body) { { app: app, query: query, totalCount: false } }
-      let(:response_data) { { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] } }
+      let(:response_data) do
+        { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
+      end
 
       before(:each) do
         stub_request(
@@ -132,7 +142,9 @@ describe Kintone::Command::Records do
       subject { target.get(app, query, fields, total_count: total_count) }
 
       let(:request_body) { { app: app, query: query, totalCount: total_count, fields: fields } }
-      let(:response_data) { { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] } }
+      let(:response_data) do
+        { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
+      end
 
       let(:total_count) { true }
       it { expect(subject).to eq response_data }
