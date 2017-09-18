@@ -48,7 +48,7 @@ describe Kintone::Api do
           'https://www.example.com/k/v1/path'
         )
           .with(
-            query: query,
+            body: params.to_h.to_json,
             headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }
           )
           .to_return(
@@ -64,29 +64,18 @@ describe Kintone::Api do
 
       context 'with some params' do
         let(:params) { { 'p1' => 'abc', 'p2' => 'def' } }
-        let(:query) { 'p1=abc&p2=def' }
 
         it { is_expected.to eq 'abc' => 'def' }
       end
 
       context 'with empty params' do
         let(:params) { {} }
-        let(:query) { nil }
 
         it { is_expected.to eq 'abc' => 'def' }
       end
 
       context 'with nil' do
         let(:params) { nil }
-        let(:query) { nil }
-
-        it { expect { subject }.to raise_error NoMethodError }
-      end
-
-      context 'with no params' do
-        subject { target.get(path) }
-
-        let(:query) { nil }
 
         it { is_expected.to eq 'abc' => 'def' }
       end
@@ -98,7 +87,7 @@ describe Kintone::Api do
             'https://www.example.com/k/v1/path'
           )
             .with(
-              query: query,
+              body: params.to_json,
               headers: { 'X-Cybozu-Authorization' => 'QWRtaW5pc3RyYXRvcjpjeWJvenU=' }
             )
             .to_return(
@@ -108,7 +97,6 @@ describe Kintone::Api do
         end
 
         let(:params) { {} }
-        let(:query) { nil }
 
         it { expect { subject }.to raise_error Kintone::KintoneError }
       end

@@ -8,6 +8,7 @@
 AllCops:
   Exclude:
     - 'Guardfile'
+    - 'vendor/**/*'
 
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/ClassAndModuleChildren:

@@ -14,7 +14,7 @@ describe Kintone::Command::Apps do
           :get,
           'https://example.cybozu.com/k/v1/apps.json'
         )
-          .with(query: query)
+          .with(body: params.to_json)
           .to_return(
             body: { apps: [] }.to_json,
             status: 200,
@@ -22,25 +22,25 @@ describe Kintone::Command::Apps do
           )
       end
 
-      where(:params, :query) do
+      where(:params) do
         [
-          [{ ids: [100, 200] }, 'ids[0]=100&ids[1]=200'],
-          [{ ids: [] }, nil],
-          [{ ids: nil }, 'ids'],
-          [{ codes: ['AAA', 'BBB'] }, 'codes[0]=AAA&codes[1]=BBB'],
-          [{ codes: [] }, nil],
-          [{ codes: nil }, 'codes'],
-          [{ name: '名前' }, 'name=名前'],
-          [{ name: '' }, 'name='],
-          [{ name: nil }, 'name'],
-          [{ spaceIds: [100, 200] }, 'spaceIds[0]=100&spaceIds[1]=200'],
-          [{ spaceIds: [] }, nil],
-          [{ spaceIds: nil }, 'spaceIds'],
-          [{ limit: 100 }, 'limit=100'],
-          [{ limit: nil }, 'limit'],
-          [{ offset: 100 }, 'offset=100'],
-          [{ offset: nil }, 'offset'],
-          [{}, nil]
+          [{ ids: [100, 200] }],
+          [{ ids: [] }],
+          [{ ids: nil }],
+          [{ codes: ['AAA', 'BBB'] }],
+          [{ codes: [] }],
+          [{ codes: nil }],
+          [{ name: '名前' }],
+          [{ name: '' }],
+          [{ name: nil }],
+          [{ spaceIds: [100, 200] }],
+          [{ spaceIds: [] }],
+          [{ spaceIds: nil }],
+          [{ limit: 100 }],
+          [{ limit: nil }],
+          [{ offset: 100 }],
+          [{ offset: nil }],
+          [{}]
         ]
       end
 
@@ -52,7 +52,20 @@ describe Kintone::Command::Apps do
     context '引数にnilを指定した場合' do
       let(:params) { nil }
 
-      it { expect { subject }.to raise_error NoMethodError }
+      before(:each) do
+        stub_request(
+          :get,
+          'https://example.cybozu.com/k/v1/apps.json'
+        )
+          .with(body: params.to_h.to_json)
+          .to_return(
+            body: { apps: [] }.to_json,
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
+      end
+
+      it { is_expected.to be_a_kind_of(Array) }
     end
 
     context 'fail to request' do
@@ -61,7 +74,7 @@ describe Kintone::Command::Apps do
           :get,
           'https://example.cybozu.com/k/v1/apps.json'
         )
-          .with(query: query)
+          .with(body: params.to_json)
           .to_return(
             body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
             status: 500,
@@ -70,7 +83,6 @@ describe Kintone::Command::Apps do
       end
 
       let(:params) { { ids: [100, 200] } }
-      let(:query) { 'ids[0]=100&ids[1]=200' }
 
       it { expect { subject }.to raise_error Kintone::KintoneError }
     end

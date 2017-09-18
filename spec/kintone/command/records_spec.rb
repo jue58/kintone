@@ -13,22 +13,24 @@ describe Kintone::Command::Records do
     let(:app) { 8 }
     let(:query) { '' }
     let(:fields) { [] }
+    let(:request_body) { { app: app, query: query.to_s, totalCount: false, fields: fields } }
 
     context 'アプリIDだけ指定した時' do
+      let(:response_data) do
+        { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
+      end
+
       before(:each) do
         stub_request(
           :get,
-          'https://example.cybozu.com/k/v1/records.json?app=8&query='
+          'https://example.cybozu.com/k/v1/records.json'
         )
+          .with(body: request_body.to_json)
           .to_return(
             body: response_data.to_json,
             status: 200,
             headers: { 'Content-type' => 'application/json' }
           )
-      end
-
-      def response_data
-        { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
       end
 
       it { expect(subject).to eq response_data }
@@ -38,8 +40,9 @@ describe Kintone::Command::Records do
       before(:each) do
         stub_request(
           :get,
-          'https://example.cybozu.com/k/v1/records.json?app=8&query=updated_time%20%3e%20%222012%2d02%2d03T09%3a00%3a00%2b0900%22%20and%20updated_time%20%3c%20%222012%2d02%2d03T10%3a00%3a00%2b0900%22'
+          'https://example.cybozu.com/k/v1/records.json'
         )
+          .with(body: request_body.to_json)
           .to_return(
             body: response_data.to_json,
             status: 200,
@@ -48,8 +51,7 @@ describe Kintone::Command::Records do
       end
 
       let(:query) { 'updated_time > "2012-02-03T09:00:00+0900" and updated_time < "2012-02-03T10:00:00+0900"' } # rubocop:disable Metrics/LineLength
-
-      def response_data
+      let(:response_data) do
         { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
       end
 
@@ -60,8 +62,9 @@ describe Kintone::Command::Records do
       before(:each) do
         stub_request(
           :get,
-          'https://example.cybozu.com/k/v1/records.json?app=8&query=&fields%5b0%5d=%E3%83%AC%E3%82%B3%E3%83%BC%E3%83%89%E7%95%AA%E5%8F%B7&fields%5b1%5d=created_time&fields%5b2%5d=dropdown'
+          'https://example.cybozu.com/k/v1/records.json'
         )
+          .with(body: request_body.to_json)
           .to_return(
             body: response_data.to_json,
             status: 200,
@@ -70,8 +73,7 @@ describe Kintone::Command::Records do
       end
 
       let(:fields) { %w(レコード番号 created_time dropdown) }
-
-      def response_data
+      let(:response_data) do
         { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
       end
 
@@ -84,7 +86,7 @@ describe Kintone::Command::Records do
           :get,
           'https://example.cybozu.com/k/v1/records.json'
         )
-          .with(query: { app: 8, query: '' })
+          .with(body: request_body.to_json)
           .to_return(
             body: response_data.to_json,
             status: 200,
@@ -93,8 +95,7 @@ describe Kintone::Command::Records do
       end
 
       let(:query) { nil }
-
-      def response_data
+      let(:response_data) do
         { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
       end
 
@@ -103,8 +104,25 @@ describe Kintone::Command::Records do
 
     context 'fieldsにnilを指定した時' do
       let(:fields) { nil }
+      let(:request_body) { { app: app, query: query, totalCount: false } }
+      let(:response_data) do
+        { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
+      end
 
-      it { expect { subject }.to raise_error(NoMethodError) }
+      before(:each) do
+        stub_request(
+          :get,
+          'https://example.cybozu.com/k/v1/records.json'
+        )
+          .with(body: request_body.to_json)
+          .to_return(
+            body: response_data.to_json,
+            status: 200,
+            headers: { 'Content-type' => 'application/json' }
+          )
+      end
+
+      it { expect(subject).to eq response_data }
     end
 
     context 'totalCountにtrueを指定した時' do
@@ -113,7 +131,7 @@ describe Kintone::Command::Records do
           :get,
           'https://example.cybozu.com/k/v1/records.json'
         )
-          .with(query: { app: 8, query: '', totalCount: true })
+          .with(body: request_body.to_json)
           .to_return(
             body: response_data.to_json,
             status: 200,
@@ -123,7 +141,8 @@ describe Kintone::Command::Records do
 
       subject { target.get(app, query, fields, total_count: total_count) }
 
-      def response_data
+      let(:request_body) { { app: app, query: query, totalCount: total_count, fields: fields } }
+      let(:response_data) do
         { 'records' => [{ 'record_id' => { 'type' => 'RECORD_NUMBER', 'value' => '1' } }] }
       end
 
@@ -135,14 +154,17 @@ describe Kintone::Command::Records do
       before(:each) do
         stub_request(
           :get,
-          'https://example.cybozu.com/k/v1/records.json?app=8&query='
+          'https://example.cybozu.com/k/v1/records.json'
         )
+          .with(body: request_body.to_json)
           .to_return(
             body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
             status: 500,
             headers: { 'Content-Type' => 'application/json' }
           )
       end
+      let(:fields) { nil }
+      let(:request_body) { { app: app, query: '', totalCount: false } }
 
       it { expect { subject }.to raise_error Kintone::KintoneError }
     end

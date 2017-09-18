@@ -39,7 +39,9 @@ class Kintone::Api
     response =
       @connection.get do |request|
         request.url url
-        request.params = params
+        # NOTE: Request URI Too Large 対策
+        request.headers['Content-Type'] = 'application/json'
+        request.body = params.to_h.to_json
       end
     raise Kintone::KintoneError.new(response.body, response.status) if response.status != 200
     response.body

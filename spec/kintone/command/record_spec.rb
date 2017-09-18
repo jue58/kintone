@@ -9,7 +9,8 @@ describe Kintone::Command::Record do
 
   describe '#get' do
     before(:each) do
-      stub_request(:get, 'https://www.example.com/k/v1/record.json?app=8&id=100')
+      stub_request(:get, 'https://www.example.com/k/v1/record.json')
+        .with(body: request_body.to_json)
         .to_return(
           body: '{"result":"ok"}',
           status: 200,
@@ -18,6 +19,8 @@ describe Kintone::Command::Record do
     end
 
     subject { target.get(app, id) }
+
+    let(:request_body) { { app: app, id: id } }
 
     where(:app, :id) do
       [
@@ -32,7 +35,8 @@ describe Kintone::Command::Record do
 
     context 'fail to request' do
       before(:each) do
-        stub_request(:get, 'https://www.example.com/k/v1/record.json?app=8&id=100')
+        stub_request(:get, 'https://www.example.com/k/v1/record.json')
+          .with(body: request_body)
           .to_return(
             body: '{"message":"不正なJSON文字列です。","id":"1505999166-897850006","code":"CB_IJ01"}',
             status: 500,
