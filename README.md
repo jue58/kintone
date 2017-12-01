@@ -225,8 +225,8 @@ api.records.delete(app, ids, revisions: revisions)
 ### <a name="bulk_request"> Bulk request
 
 ```ruby
-requests = {"requests" => [{"method" => "POST", ...}, {"method" => "PUT", ...}]}
-api.bulk.request(requests) # => {"results" => [...]}
+requests = [{"method" => "POST", ...}, {"method" => "PUT", ...}]
+api.bulk.request(requests) # => [...]
 ```
 
 ### <a name="file"> File
