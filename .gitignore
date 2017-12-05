@@ -17,3 +17,5 @@ test/version_tmp
 tmp
 vendor/
 sample/
+.ruby-version
+.rbenv-gemsets
