@@ -111,7 +111,7 @@ class Kintone::Api
 
   def build_headers(user, password)
     if password # パスワード認証
-      { 'X-Cybozu-Authorization' => Base64.encode64("#{user}:#{password}") }
+      { 'X-Cybozu-Authorization' => Base64.strict_encode64("#{user}:#{password}") }
     else # APIトークン認証
       { 'X-Cybozu-API-Token' => user }
     end
