@@ -25,6 +25,8 @@ class Kintone::Api
         builder.response :json, content_type: /\bjson$/
         builder.adapter :net_http
       end
+
+    yield(@connection) if block_given?
   end
 
   def get_url(command)

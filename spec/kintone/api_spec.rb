@@ -523,4 +523,28 @@ describe Kintone::Api do
       it { is_expected.to eq 'abc' }
     end
   end
+
+  describe '#new' do
+    let(:domain) { 'www.example.com' }
+    let(:user) { 'Administrator' }
+    let(:password) { 'cybozu' }
+
+    context 'ブロック引数が与えられていない時' do
+      subject { api.instance_variable_get(:@connection).proxy }
+      let(:api) { Kintone::Api.new(domain, user, password) }
+
+      it { is_expected.to be_nil }
+    end
+
+    context 'ブロック引数が与えられている時' do
+      subject { api.instance_variable_get(:@connection).proxy }
+      let(:api) do
+        Kintone::Api.new(domain, user, password) do |connection|
+          connection.proxy = 'http://127.0.0.1'
+        end
+      end
+
+      it { is_expected.to be_a Faraday::ProxyOptions }
+    end
+  end
 end
