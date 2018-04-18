@@ -110,9 +110,9 @@ operator symbol | query helper
 --- | ---
 = | field(:code) == other
 != | field(:code) != other
-> | field(:code) > other
+&gt; | field(:code) > other
 < | field(:code) < other
->= | field(:code) >= other
+&gt;= | field(:code) >= other
 <= | field(:code) <= other
 in | field(:code).in(["A", "B"])
 not in | field(:code).not_in(["A", "B"])
