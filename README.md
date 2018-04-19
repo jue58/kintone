@@ -39,11 +39,11 @@ api = Kintone::Api.new("example.cybozu.com", "authtoken")
 - [Record delete](#record_delete)
 - [Bulk request](#bulk_request)
 - [File](#file)
-- [Format retrieval](#format_retrieval)
 - [Permissions](#permissions)
 - [Space management](#space_management)
 - [Guests](#guests)
 - [Application information](#application_information)
+- [Form structure](#form_structure)
 - [API information](#api_information)
 
 ### <a name="record_retrieval"> Record retrieval
@@ -239,13 +239,6 @@ file_key = api.file.register("/path/to/file", "text/plain", "file.txt")
 file = api.file.get(file_key)
 ```
 
-### <a name="format_retrieval"> Format retrieval
-
-```ruby
-app = 4
-api.form.get(app) # => {"properties" => [{...}, ...]}
-```
-
 ### <a name="permissions"> Permissions
 
 ```ruby
@@ -322,6 +315,15 @@ api.app.get(id) # => {"appId" => "4", "code" => "", ...}
 
 name = "test"; codes = ["FOO", "BAR"]
 api.apps.get({ name: name, codes: codes }) # => { "apps" => [{...}, ...] }
+```
+
+### <a name="form_structure"> Form structure
+
+```ruby
+app = 1
+api.form.get(app) # => {"properties" => [{...}, ...]}
+
+api.preview_form.get(app) # => {"properties" => [{...}, ...]}
 ```
 
 ### <a name="api_information"> API information
