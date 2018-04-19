@@ -280,4 +280,10 @@ describe Kintone::Api::Guest do
 
     it { is_expected.to be_a_kind_of(Kintone::Command::BulkRequest) }
   end
+
+  describe '#preview_form' do
+    subject { target.preview_form }
+
+    it { is_expected.to be_a_kind_of(Kintone::Command::PreviewForm) }
+  end
 end

@@ -8,22 +8,10 @@ class Kintone::Api
 
     GUEST_PATH = '/k/guest/%s/v1/'.freeze
     ACCESSIBLE_COMMAND = [
-      :record,
-      :records,
-      :form,
-      :app_acl,
-      :record_acl,
-      :field_acl,
-      :space,
-      :space_body,
-      :space_thread,
-      :space_members,
-      :space_guests,
-      :app,
-      :apps,
-      :bulk_request,
-      :bulk,
-      :file
+      :record, :records, :form, :app_acl, :record_acl,
+      :field_acl, :space, :space_body, :space_thread, :space_members,
+      :space_guests, :app, :apps, :bulk_request, :bulk,
+      :file, :preview_form
     ].freeze
 
     def_delegators :@api, :get, :post, :put, :delete, :post_file

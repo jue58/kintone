@@ -392,6 +392,12 @@ describe Kintone::Api do
 
       it { is_expected.to be_a_kind_of(Kintone::Command::File) }
     end
+
+    describe '#preview_form' do
+      subject { target.preview_form }
+
+      it { is_expected.to be_a_kind_of(Kintone::Command::PreviewForm) }
+    end
   end
 
   context 'APIトークン認証の時' do
