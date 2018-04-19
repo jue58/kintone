@@ -18,7 +18,7 @@ class Kintone::Api
 
     def initialize(space_id, api)
       @api = api
-      @guest_path = GUEST_PATH % space_id
+      @guest_path = GUEST_PATH % space_id.to_i
     end
 
     def get_url(command)

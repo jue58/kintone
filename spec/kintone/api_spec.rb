@@ -32,12 +32,22 @@ describe Kintone::Api do
 
       context '引数がnilの時' do
         let(:space) { nil }
-        xit { expect(subject.instance_variable_get(:@guest_path)).to eq('/k/guest//v1/') }
+        it { expect(subject.instance_variable_get(:@guest_path)).to eq('/k/guest/0/v1/') }
       end
 
-      context '引数に数字以外の文字が含まれる時' do
+      context '引数が数字の時' do
         let(:space) { '2.1' }
-        xit { expect(subject.instance_variable_get(:@guest_path)).to eq('/k/guest//v1/') }
+        it { expect(subject.instance_variable_get(:@guest_path)).to eq('/k/guest/2/v1/') }
+      end
+
+      context '引数が数値に変換できる文字列の時' do
+        let(:space) { '21No' }
+        it { expect(subject.instance_variable_get(:@guest_path)).to eq('/k/guest/21/v1/') }
+      end
+
+      context '引数が数値に変換できる文字列でないとき時' do
+        let(:space) { 'No21' }
+        it { expect(subject.instance_variable_get(:@guest_path)).to eq('/k/guest/0/v1/') }
       end
     end
 
