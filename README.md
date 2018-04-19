@@ -125,6 +125,7 @@ or | or!
 function | query helper
 --- | ---
 LOGINUSER() | login_user
+PRIMARY_ORGANIZATION() | primary_organization
 NOW() | now
 TODAY() | today
 THIS_MONTH() | this_month
