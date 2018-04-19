@@ -28,6 +28,10 @@ class Kintone::Query
     function_string('LOGINUSER()')
   end
 
+  def primary_organization
+    function_string('PRIMARY_ORGANIZATION()')
+  end
+
   def now
     function_string('NOW()')
   end

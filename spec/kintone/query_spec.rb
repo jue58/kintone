@@ -252,11 +252,30 @@ describe Kintone::Query do
     context 'in', 'with f' do
       where(:target, :result) do
         [
-          [Kintone::Query.new { f(:dropdown).in(['"A"', '"B"']) }, 'dropdown in ("A", "B")'],
-          [Kintone::Query.new { f(:dropdown).in(%w(A B)) }, 'dropdown in ("A", "B")'],
-          [Kintone::Query.new { f(:dropdown).in([:A, :B]) }, 'dropdown in ("A", "B")'],
-          [Kintone::Query.new { f(:dropdown).in([100, 200]) }, 'dropdown in (100, 200)'],
-          [Kintone::Query.new { f('作成者').in([login_user]) }, '作成者 in (LOGINUSER())']
+          [
+            Kintone::Query.new { f(:dropdown).in(['"A"', '"B"']) },
+            'dropdown in ("A", "B")'
+          ],
+          [
+            Kintone::Query.new { f(:dropdown).in(%w(A B)) },
+            'dropdown in ("A", "B")'
+          ],
+          [
+            Kintone::Query.new { f(:dropdown).in([:A, :B]) },
+            'dropdown in ("A", "B")'
+          ],
+          [
+            Kintone::Query.new { f(:dropdown).in([100, 200]) },
+            'dropdown in (100, 200)'
+          ],
+          [
+            Kintone::Query.new { f('作成者').in([login_user]) },
+            '作成者 in (LOGINUSER())'
+          ],
+          [
+            Kintone::Query.new { field('組織').in([primary_organization]) },
+            '組織 in (PRIMARY_ORGANIZATION())'
+          ]
         ]
       end
 
@@ -287,6 +306,10 @@ describe Kintone::Query do
           [
             Kintone::Query.new { field('作成者').not_in([login_user]) },
             '作成者 not in (LOGINUSER())'
+          ],
+          [
+            Kintone::Query.new { field('組織').not_in([primary_organization]) },
+            '組織 not in (PRIMARY_ORGANIZATION())'
           ]
         ]
       end
