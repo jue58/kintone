@@ -14,7 +14,7 @@ class Kintone::Api
     :record, :records, :form, :app_acl, :record_acl,
     :field_acl, :template_space, :space, :space_body, :space_thread,
     :space_members, :guests, :app, :apps, :apis,
-    :bulk_request, :bulk, :file
+    :bulk_request, :bulk, :file, :preview_form
   ].freeze
 
   def initialize(domain, user, password = nil)

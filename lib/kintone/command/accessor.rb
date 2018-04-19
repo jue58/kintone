@@ -4,6 +4,7 @@ class Kintone::Command
   autoload :Records, 'kintone/command/records'
   autoload :BulkRequest, 'kintone/command/bulk_request'
   autoload :Form, 'kintone/command/form'
+  autoload :PreviewForm, 'kintone/command/preview_form'
   autoload :App, 'kintone/command/app'
   autoload :Apps, 'kintone/command/apps'
   autoload :AppAcl, 'kintone/command/app_acl'
@@ -39,6 +40,10 @@ class Kintone::Command
 
     def form(api)
       Form.new(api)
+    end
+
+    def preview_form(api)
+      PreviewForm.new(api)
     end
 
     def app(api)
