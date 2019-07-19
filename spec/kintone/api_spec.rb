@@ -563,4 +563,22 @@ describe Kintone::Api do
       it { is_expected.to be_a Faraday::ProxyOptions }
     end
   end
+
+  describe '#basic_auth' do
+    let(:domain) { 'www.example.com' }
+    let(:user) { 'Administrator' }
+    let(:password) { 'cybozu' }
+    let(:basic_auth_user) { 'user' }
+    let(:basic_auth_password) { 'password' }
+
+    context 'Basic認証' do
+      subject do
+        api.basic_auth(basic_auth_user, basic_auth_password)
+           .instance_variable_get(:@connection).headers['Authorization']
+      end
+      let(:api) { Kintone::Api.new(domain, user, password) }
+
+      it { is_expected.to match(/Basic \w+/) }
+    end
+  end
 end

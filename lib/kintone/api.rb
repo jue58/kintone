@@ -29,6 +29,11 @@ class Kintone::Api
     yield(@connection) if block_given?
   end
 
+  def basic_auth(name, password)
+      @connection.basic_auth(name, password)
+      self
+  end
+
   def get_url(command)
     BASE_PATH + (COMMAND % command)
   end
