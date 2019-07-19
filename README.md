@@ -30,6 +30,9 @@ api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
 
 # Use token authentication
 api = Kintone::Api.new("example.cybozu.com", "authtoken")
+
+# Basic authentication
+api.basic_auth("username", "password")
 ```
 
 ### Supported API
