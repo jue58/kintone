@@ -356,4 +356,4 @@ api.post(url, body) # => {"ids" => ["100","101"]}
 api.guest(1).record.get(8, 100)
 ```
 
-see also [kintone developers](http://developers.kintone.com/)
+see also [kintone developers](https://developer.kintone.io/hc/en-us)
