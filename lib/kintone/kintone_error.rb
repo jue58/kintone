@@ -2,6 +2,9 @@ class Kintone::KintoneError < StandardError
   attr_reader :message_text, :id, :code, :http_status, :errors
 
   def initialize(messages, http_status)
+    if messages.is_a?(Hash) && messages.has_key?('results')
+      messages = messages['results'].find { |message| message.has_key?('message') }
+    end
     @message_text = messages['message']
     @id = messages['id']
     @code = messages['code']
