@@ -30,6 +30,21 @@ api = Kintone::Api.new("example.cybozu.com", "Administrator", "cybozu")
 
 # Use token authentication
 api = Kintone::Api.new("example.cybozu.com", "authtoken")
+
+# Use OAuth authentication
+api = Kintone::OAuthApi.new("example.cybozu.com", "access_token")
+# if set oauth options below, you can refresh the access_token.
+oauth_options = {
+  client_id: 'client_id',
+  client_secret: 'client_secret',
+  refresh_token: 'refresh_token',
+  expires_at: 1599921045
+}
+api = Kintone::OAuthApi.new("example.cybozu.com", "access_token", oauth_options)
+# get new token.
+api.refresh!
+api.access_token.token
+# => "new_access_token"
 ```
 
 ### Supported API
