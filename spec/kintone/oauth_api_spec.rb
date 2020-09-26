@@ -57,9 +57,17 @@ describe Kintone::OAuthApi do
         it { is_expected.to eq 'abc' => 'def' }
       end
 
+      context 'fail to request when unexpected response status returns' do
+        let(:response_status) { 201 }
+        before(:each) do
+          add_stub_request
+        end
+        it { expect { subject }.to raise_error Kintone::KintoneError }
+      end
+
       context 'fail to request' do
         let(:response_status) { 500 }
-        let(:response_body) { { message: '不正なJSON文字列です。', id: '1505999166-897850006', code: 'CB_IJ01' }.to_json }
+        let(:response_body) { { message: '不正なJSON文字列です。', id: '1505999166-897850006', code: 'CB_IJ01' } }
         before(:each) do
           add_stub_request
         end
@@ -110,6 +118,25 @@ describe Kintone::OAuthApi do
       subject { target.delete(path, body) }
 
       it { is_expected.to eq 'abc' => 'def' }
+    end
+
+    describe '#post_file' do
+      before(:each) do
+        add_stub_request
+        expect(Faraday::UploadIO).to receive(:new).with(file_path, content_type, original_filename).and_return(attachment)
+      end
+
+      subject { target.post_file(path, file_path, content_type, original_filename) }
+      let(:file_path) { '/path/to/file.txt' }
+      let(:content_type) { 'text/plain' }
+      let(:original_filename) { 'fileName.txt' }
+      let(:attachment) { double('attachment') }
+      let(:request_verb) { :post }
+      let(:response_status) { 200 }
+      let(:response_body) { { fileKey: 'abc' } }
+      let(:option_headers) { { 'Content-Type' => %r{multipart/form-data} } }
+
+      it { is_expected.to eq 'abc' }
     end
 
     describe '#refresh!' do

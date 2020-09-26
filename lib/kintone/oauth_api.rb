@@ -23,28 +23,39 @@ class Kintone::OAuthApi < Kintone::Api
     @access_token = ::OAuth2::AccessToken.new(client, token, refresh_token: opts[:refresh_token], expires_at: opts[:expires_at])
   end
 
+  def refresh!
+    @access_token = @access_token.refresh!
+  end
+
   def get(url, params = {})
     opts = request_options(params: params, headers: nil)
     request(:get, url, opts)
   end
 
   def post(url, body)
-    opts = request_options(body: body)
+    json_body = body.to_json if body.respond_to?(:to_json)
+    opts = request_options(body: json_body)
     request(:post, url, opts)
   end
 
   def put(url, body)
-    opts = request_options(body: body)
+    json_body = body.to_json if body.respond_to?(:to_json)
+    opts = request_options(body: json_body)
     request(:put, url, opts)
   end
 
   def delete(url, body = nil)
-    opts = request_options(body: body)
+    json_body = body.to_json if body.respond_to?(:to_json)
+    opts = request_options(body: json_body)
     request(:delete, url, opts)
   end
 
-  def refresh!
-    @access_token = @access_token.refresh!
+  def post_file(url, path, content_type, original_filename)
+    body = { file: Faraday::UploadIO.new(path, content_type, original_filename) }
+    headers = { 'Content-Type' => 'multipart/form-data' }
+    opts = request_options(body: body, headers: headers)
+    res = request(:post, url, opts)
+    res['fileKey']
   end
 
   private
@@ -81,7 +92,7 @@ class Kintone::OAuthApi < Kintone::Api
     opts = {}
     opts[:headers] = headers
     opts[:params] = params if params
-    opts[:body] = body.to_json if body
+    opts[:body] = body if body
     opts
   end
 
