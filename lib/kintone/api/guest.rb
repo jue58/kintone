@@ -1,5 +1,4 @@
 require 'forwardable'
-require 'kintone/api'
 require 'kintone/command/accessor'
 
 class Kintone::Api
