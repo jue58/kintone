@@ -1,5 +1,5 @@
 require 'faraday'
-require 'faraday_middleware'
+require 'faraday/multipart'
 require 'base64'
 require 'json'
 require 'kintone/command/accessor'
